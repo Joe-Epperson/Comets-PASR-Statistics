@@ -1,0 +1,326 @@
+.data-collection-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.data-collection-content {
+  max-width: 1200px;
+  width: 100%;
+  background-color: var(--comets-white);
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 61, 165, 0.15);
+}
+
+.page-title {
+  font-size: 3em;
+  margin-bottom: 0.5rem;
+  color: var(--comets-red);
+  text-align: center;
+  font-weight: 800;
+}
+
+.match-info {
+  font-size: 1.2em;
+  color: var(--comets-blue);
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Two Column Grid Layout */
+.data-collection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Player Selection Section - Left Column */
+.player-selection-section {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--comets-blue);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: var(--comets-gray);
+}
+
+.section-title {
+  font-size: 1.4em;
+  color: var(--comets-blue);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Custom Scrollbar for Player List */
+.player-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.player-list::-webkit-scrollbar-track {
+  background: var(--comets-white);
+  border-radius: 4px;
+}
+
+.player-list::-webkit-scrollbar-thumb {
+  background: var(--comets-blue);
+  border-radius: 4px;
+}
+
+.player-list::-webkit-scrollbar-thumb:hover {
+  background: var(--comets-blue-dark);
+}
+
+.player-button {
+  padding: 1rem;
+  background-color: var(--comets-white);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: var(--comets-dark-gray);
+  font-size: 1em;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-button:hover {
+  border-color: var(--comets-blue-light);
+  background-color: #f0f7ff;
+}
+
+.player-button.active {
+  border-color: var(--comets-blue);
+  background-color: #e6f2ff;
+  font-weight: 700;
+}
+
+.no-players-message {
+  padding: 2rem;
+  text-align: center;
+  color: var(--comets-red);
+  font-weight: 500;
+}
+
+/* Action Buttons Section - Right Column */
+.action-buttons-section {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--comets-red);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: var(--comets-gray);
+}
+
+.instruction-message {
+  font-size: 1.1em;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* 2x3 Action Button Grid */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.action-button {
+  padding: 1.5rem;
+  font-size: 1.3em;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  color: var(--comets-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Pass Buttons - Orange */
+.pass-success {
+  background-color: var(--action-pass-success);
+  border-color: var(--action-pass-success);
+}
+
+.pass-success:hover:not(:disabled) {
+  background-color: #ffad5c;
+  border-color: #ffad5c;
+}
+
+.pass-fail {
+  background-color: var(--action-pass-fail);
+  border-color: var(--action-pass-fail);
+}
+
+.pass-fail:hover:not(:disabled) {
+  background-color: #b35900;
+  border-color: #b35900;
+}
+
+/* Shot Buttons - Green */
+.shot-success {
+  background-color: var(--action-shot-success);
+  border-color: var(--action-shot-success);
+}
+
+.shot-success:hover:not(:disabled) {
+  background-color: #66bb6a;
+  border-color: #66bb6a;
+}
+
+.shot-fail {
+  background-color: var(--action-shot-fail);
+  border-color: var(--action-shot-fail);
+}
+
+.shot-fail:hover:not(:disabled) {
+  background-color: #256a29;
+  border-color: #256a29;
+}
+
+/* Dribble Buttons - Purple */
+.dribble-success {
+  background-color: var(--action-dribble-success);
+  border-color: var(--action-dribble-success);
+}
+
+.dribble-success:hover:not(:disabled) {
+  background-color: #ab47bc;
+  border-color: #ab47bc;
+}
+
+.dribble-fail {
+  background-color: var(--action-dribble-fail);
+  border-color: var(--action-dribble-fail);
+}
+
+.dribble-fail:hover:not(:disabled) {
+  background-color: #5e1589;
+  border-color: #5e1589;
+}
+
+/* Disabled Action Buttons */
+.action-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
+
+/* Set Piece Button */
+.set-piece-button {
+  background-color: var(--comets-red);
+  color: var(--comets-white);
+  border: 3px solid var(--comets-red);
+  font-size: 1.4em;
+  padding: 1.2em;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.set-piece-button:hover {
+  background-color: var(--comets-red-dark);
+  border-color: var(--comets-red-dark);
+}
+
+/* Back Button */
+.back-button {
+  background-color: var(--comets-blue);
+  color: var(--comets-white);
+  border: 2px solid var(--comets-blue);
+  font-size: 1.1em;
+  padding: 0.8em 1.5em;
+  display: block;
+  margin: 0 auto;
+}
+
+.back-button:hover {
+  background-color: var(--comets-blue-dark);
+  border-color: var(--comets-blue-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .data-collection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-list {
+    max-height: 300px;
+  }
+
+  .action-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .data-collection-content {
+    padding: 2rem;
+  }
+
+  .page-title {
+    font-size: 2.2em;
+  }
+
+  .action-button {
+    font-size: 1.1em;
+    padding: 1.2rem;
+  }
+
+  .set-piece-button {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-collection-content {
+    padding: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8em;
+  }
+
+  .match-info {
+    font-size: 1em;
+  }
+
+  .action-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .action-button {
+    font-size: 1em;
+    padding: 1rem;
+  }
+
+  .set-piece-button {
+    font-size: 1.1em;
+  }
+}
