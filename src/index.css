@@ -42,11 +42,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background: linear-gradient(135deg, var(--comets-white) 0%, var(--comets-gray) 100%);
+  overflow: hidden;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 h1 {

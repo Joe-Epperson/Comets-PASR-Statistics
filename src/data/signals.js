@@ -8,3 +8,8 @@ export const selectedPlayers = signal([]);
 export const currentPlayer = signal('');
 export const currentActionType = signal('');
 export const isSuccessful = signal(false);
+
+// Signals for tracking previous actions
+export const previousActionType = signal('');
+export const previousActionSuccess = signal(false);
+export const previousActionPlayer = signal('');
