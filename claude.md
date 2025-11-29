@@ -175,8 +175,106 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 - Action Type: "Pass"
 - Successful: true/false (from Data Collection screen)
 
-**Additional Data to Collect**:
-*To be specified in detail page design*
+**JSON Structure**:
+```json
+{
+  "Match": "string",
+  "Action Type": "Pass",
+  "Successful": "boolean",
+  "Player": "string",
+  "Previous Action": "string",
+  "Zone Started": "number (1-14)",
+  "Zone Ended": "number (1-14)",
+  "Direction": "string",
+  "Accuracy": "string",
+  "Pass Type": "string",
+  "Result if Bad": "string (optional)"
+}
+```
+
+**Data Collection Sections**:
+
+1. **Previous Action** (Auto-calculated):
+   - If `previousActionType` signal is empty → "Beginning of Play"
+   - Else if `previousActionSuccess` is true → value from `previousActionType` signal
+   - Else if `previousActionSuccess` is false → "Ball Won"
+
+2. **Zone Started** (Required - Single Select):
+   - 14 buttons arranged in soccer field layout (see reference image)
+   - Buttons numbered 1-14 matching field zones
+   - Single selection, stays selected when clicked
+   - Value: number (1-14)
+
+3. **Zone Ended** (Required - Single Select):
+   - Same 14-button field layout as Zone Started
+   - Separate field visualization
+   - Value: number (1-14)
+
+4. **Direction** (Required - Single Select):
+   - Forward
+   - Sideways
+   - Backward
+
+5. **Accuracy** (Required - Single Select):
+   - Complete
+   - Incomplete
+   - Intercepted
+   - Clearance
+   - Out of Bounds
+
+6. **Pass Type** (Required - Single Select):
+   - Lob
+   - Driven
+   - Instep
+
+7. **Result if Bad** (Conditional - Single Select):
+   - Only shown if Accuracy is "Clearance" or "Out of Bounds"
+   - Top of the Box
+   - 3 Lines Restart
+   - Side Kick In
+
+**Page Layout**:
+```
+┌──────────────────────────────────────────────────────────┐
+│  Pass Action - Player: [Name] - Successful: [Yes/No]    │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  Previous Action: [Auto-calculated display]             │
+│                                                          │
+│  ┌─────────── Zone Started ───────────┐                 │
+│  │ [Soccer field with 14 zone buttons]│                 │
+│  └─────────────────────────────────────┘                 │
+│                                                          │
+│  ┌─────────── Zone Ended ─────────────┐                 │
+│  │ [Soccer field with 14 zone buttons]│                 │
+│  └─────────────────────────────────────┘                 │
+│                                                          │
+│  Direction:                                             │
+│  [Forward] [Sideways] [Backward]                        │
+│                                                          │
+│  Accuracy:                                              │
+│  [Complete] [Incomplete] [Intercepted]                  │
+│  [Clearance] [Out of Bounds]                            │
+│                                                          │
+│  Pass Type:                                             │
+│  [Lob] [Driven] [Instep]                                │
+│                                                          │
+│  Result if Bad: (conditional)                           │
+│  [Top of the Box] [3 Lines Restart] [Side Kick In]      │
+│                                                          │
+│         [Submit Action] [Cancel]                        │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Submit Behavior**:
+- "Submit Action" button enabled when all required fields selected
+- On submit:
+  - Build complete JSON object
+  - POST to MongoDB collection
+  - Update previous action signals (type, success, player)
+  - Clear current player and action type signals
+  - Navigate back to Data Collection screen
+  - Match and selected players persist for next action
 
 ### 2. Dribble
 **Context Available on Detail Page**:
@@ -381,6 +479,11 @@ ALLOWED_ORIGINS=http://localhost:5173
 - `currentActionType` (string) - "Pass" | "Dribble" | "Shot" | "SetPiece"
 - `isSuccessful` (boolean) - true for (+), false for (-)
 
+**Signals for Tracking Previous Actions**:
+- `previousActionType` (string) - Type of last submitted action
+- `previousActionSuccess` (boolean) - Success status of last action
+- `previousActionPlayer` (string) - Player who performed last action
+
 ### Navigation Flow
 ```
 Home Screen
@@ -434,6 +537,72 @@ Return to Data Collection Screen (main)
 - Data is sent to backend only upon completion of data collection sequence
 - Focus on clean, maintainable code structure
 - Responsive design considerations TBD
+
+## Design Principles
+
+### Universal Layout Philosophy
+**CRITICAL: NO SCROLLING - All Pages Must Fit on One Screen**
+
+This principle applies to **ALL pages** in the application (Home, Data Collection, Pass Action, and all future action pages). The goal is to enable the fastest possible data entry and navigation during live match play.
+
+### Core Design Requirements:
+- **95vh Container Height**: Every page uses `height: 95vh` with `overflow: hidden`
+- **No Scrollbars**: All content must be visible without scrolling
+- **Horizontal Layout Preferred**: Use left-to-right flow instead of vertical stacking when possible
+- **Multi-Column Grids**: Use CSS Grid to display lists in multiple columns instead of scrolling lists
+- **Optimal Screen Usage**: Content should take up significant screen space while keeping all options visible
+- **Click-Only Interaction**: Users should complete all tasks using only mouse clicks, no scrolling
+- **Compact Sizing**: Reduce font sizes, padding, and margins as needed to fit content
+- **Text Truncation**: Use `white-space: nowrap` and `text-overflow: ellipsis` to prevent text wrapping
+
+### Page-Specific Implementations:
+
+#### Home Page (APPROVED DESIGN):
+- **Container**: 95vh height, max-width 1400px, no scrolling
+- **Header**: Title (2.5em), Subtitle (1.1em), minimal margins
+- **Two-Column Layout**: 1.4fr (Players) / 0.6fr (Match Selection)
+- **Player Selection**:
+  - 4-column grid for 25 players (no scrolling)
+  - Compact checkboxes (14px), small font (0.75em)
+  - Text truncation with ellipsis for long names
+  - Reduced padding (0.4rem vertical, 0.5rem horizontal)
+- **Match Selection**: Compact dropdown and buttons
+
+#### Data Collection Page (APPROVED DESIGN):
+- **Container**: 95vh height, max-width 1400px, no scrolling
+- **Header**: Back button (top-left), centered title and match info
+- **Two-Column Layout**: 1fr / 1fr (Players left, Actions right)
+- **Player List**: 2-column grid for 16 players (no scrolling)
+- **Action Buttons**: 2×3 grid (Pass/Shot/Dribble ±) + Set Piece button
+- All buttons sized to fit without scrolling
+
+#### Pass Action Page (APPROVED DESIGN):
+- **Container**: 95vh height, max-width 1600px, no scrolling
+- **Header Section**:
+  - Title (1.5em)
+  - Player name and success badge (centered, horizontal layout)
+  - Previous action display (horizontal row with label and value)
+- **Two-Column Main Layout**:
+  - **Left Column**: Two soccer fields side-by-side (Zone Started, Zone Ended)
+    - Field dimensions: 298px × 418px each
+    - 3×6 grid with 14 numbered zones
+    - Side-by-side using flexbox (gap: 0.75rem)
+  - **Right Column**: Options in 2-column grid
+    - Grid layout: 2 columns, 0.75rem gap
+    - Sections: Direction, Accuracy, Result if Bad (conditional)
+    - Button sizing: 0.85em font, 0.5rem padding, flexible width
+- **Submit/Cancel Buttons**: Bottom center, horizontal layout
+
+### Implementation Checklist for Future Pages:
+- [ ] Set container to `height: 95vh` with `overflow: hidden`
+- [ ] Use CSS Grid for multi-column layouts instead of single-column scrolling lists
+- [ ] Reduce font sizes, padding, and margins to fit all content
+- [ ] Test that all interactive elements are visible and clickable without scrolling
+- [ ] Use `white-space: nowrap` and `text-overflow: ellipsis` for long text
+- [ ] Prioritize horizontal space usage over vertical when possible
+- [ ] Ensure primary interactive elements are as large as possible while maintaining no-scroll requirement
+
+This design philosophy enables rapid-fire data collection where users can complete multiple actions per minute during live match tracking without ever needing to scroll.
 
 ---
 

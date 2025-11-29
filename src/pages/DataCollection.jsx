@@ -32,8 +32,15 @@ function DataCollection() {
   return (
     <div className="data-collection-container">
       <div className="data-collection-content">
-        <h1 className="page-title">Data Collection</h1>
-        <p className="match-info">Match: {selectedMatch.value || 'No match selected'}</p>
+        <div className="header-section">
+          <button className="back-button-header" onClick={handleBackToHome}>
+            ← Back to Home
+          </button>
+          <div className="header-text">
+            <h1 className="page-title">Data Collection</h1>
+            <p className="match-info">Match: {selectedMatch.value || 'No match selected'}</p>
+          </div>
+        </div>
 
         <div className="data-collection-grid">
           {/* Player Selection - Left Column */}
@@ -122,10 +129,6 @@ function DataCollection() {
             </button>
           </div>
         </div>
-
-        <button className="back-button" onClick={handleBackToHome}>
-          Back to Home
-        </button>
       </div>
     </div>
   );
