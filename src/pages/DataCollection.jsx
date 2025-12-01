@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { selectedMatch, selectedPlayers, currentPlayer, currentActionType, isSuccessful } from '../data/signals';
+import { selectedMatch, selectedPlayers, currentPlayer, currentActionType, isSuccessful, currentString, submitString } from '../data/signals';
 import './DataCollection.css';
 
 function DataCollection() {
@@ -29,6 +29,19 @@ function DataCollection() {
     navigate('/');
   };
 
+  const handlePlayEnded = async () => {
+    // Submit current string before ending play
+    await submitString(selectedMatch.value);
+    console.log('📊 Play ended - string submitted and reset');
+
+    // Show confirmation message
+    if (currentString.value.length > 0 || selectedMatch.value) {
+      alert('Play ended. String data has been saved.');
+    } else {
+      alert('Play ended. No string to save.');
+    }
+  };
+
   return (
     <div className="data-collection-container">
       <div className="data-collection-content">
@@ -40,6 +53,9 @@ function DataCollection() {
             <h1 className="page-title">Data Collection</h1>
             <p className="match-info">Match: {selectedMatch.value || 'No match selected'}</p>
           </div>
+          <button className="play-ended-button" onClick={handlePlayEnded}>
+            Play Ended
+          </button>
         </div>
 
         <div className="data-collection-grid">

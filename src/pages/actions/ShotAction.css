@@ -1,0 +1,322 @@
+.shot-action-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: var(--comets-gray);
+}
+
+.shot-action-content {
+  max-width: 1600px;
+  width: 100%;
+  height: 95vh;
+  background-color: var(--comets-white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shot-action-content .action-title {
+  font-size: 1.5em;
+  margin-bottom: 0.5rem;
+  color: var(--action-shot-success);
+  text-align: center;
+  font-weight: 800;
+}
+
+.shot-action-content .action-header-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+}
+
+.shot-action-content .player-name {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.shot-action-content .success-badge {
+  padding: 0.4em 1em;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: var(--comets-white);
+}
+
+.shot-action-content .success-badge.success {
+  background-color: var(--action-shot-success);
+}
+
+.shot-action-content .success-badge.fail {
+  background-color: var(--action-shot-fail);
+}
+
+/* Form Sections - Two Column Layout */
+.shot-action-content .form-main {
+  flex: 1;
+  display: flex;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+.shot-action-content .options-column {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.shot-action-content .form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.shot-action-content .form-section h3 {
+  font-size: 0.9em;
+  color: var(--action-shot-success);
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+/* Previous Action Display */
+.shot-action-content .previous-action-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.shot-action-content .previous-action-row h3 {
+  margin: 0;
+  white-space: nowrap;
+  min-width: 150px;
+  font-size: 0.9em;
+  color: var(--action-shot-success);
+}
+
+.shot-action-content .previous-action-display {
+  padding: 0.5rem 1rem;
+  background-color: var(--comets-gray);
+  border-left: 3px solid var(--action-shot-success);
+  border-radius: 6px;
+  font-size: 0.95em;
+  font-weight: 600;
+  color: var(--comets-dark-gray);
+  flex: 1;
+}
+
+/* Soccer Field Zone Buttons */
+.shot-action-content .zone-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.shot-action-content .zone-section h3 {
+  font-size: 0.9em;
+  color: var(--action-shot-success);
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.shot-action-content .field-container {
+  position: relative;
+  width: 298px;
+  height: 418px;
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+  border: 2px solid var(--comets-white);
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 2px;
+  padding: 4px;
+}
+
+.shot-action-content .zone-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  color: #FFD700;
+  font-size: 0.9em;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shot-action-content .zone-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.03);
+}
+
+.shot-action-content .zone-button.active {
+  background-color: var(--action-shot-success);
+  border-color: var(--comets-white);
+  color: var(--comets-white);
+  transform: scale(1.05);
+}
+
+/* Zone positioning based on reference image */
+.shot-action-content .zone-1 { grid-column: 2; grid-row: 6; }
+.shot-action-content .zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 3px 3px 20px 3px; }
+.shot-action-content .zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 3px 3px 3px 20px; }
+.shot-action-content .zone-4 { grid-column: 2; grid-row: 5; }
+.shot-action-content .zone-5 { grid-column: 3; grid-row: 4; }
+.shot-action-content .zone-6 { grid-column: 1; grid-row: 4; }
+.shot-action-content .zone-7 { grid-column: 2; grid-row: 4; }
+.shot-action-content .zone-8 { grid-column: 3; grid-row: 3; }
+.shot-action-content .zone-9 { grid-column: 1; grid-row: 3; }
+.shot-action-content .zone-10 { grid-column: 2; grid-row: 3; }
+.shot-action-content .zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 3px 20px 3px 3px; }
+.shot-action-content .zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 20px 3px 3px 3px; }
+.shot-action-content .zone-13 { grid-column: 2; grid-row: 1; }
+.shot-action-content .zone-14 { grid-column: 2; grid-row: 2; }
+
+/* Button Groups - Horizontal Row Layout */
+.shot-action-content .button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.shot-action-content .option-button {
+  flex: 1;
+  min-width: calc(50% - 0.25rem);
+  padding: 0.5rem 1rem;
+  font-size: 0.85em;
+  font-weight: 600;
+  background-color: var(--comets-gray);
+  border: 2px solid var(--action-shot-fail);
+  color: var(--comets-dark-gray);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.shot-action-content .option-button:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-color: var(--action-shot-success);
+}
+
+.shot-action-content .option-button.active {
+  background-color: var(--action-shot-success);
+  border-color: var(--action-shot-success);
+  color: var(--comets-white);
+  font-weight: 700;
+}
+
+/* Action Buttons - Compact */
+.shot-action-content .action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  justify-content: center;
+}
+
+.shot-action-content .submit-button {
+  background-color: var(--action-shot-success);
+  color: var(--comets-white);
+  border: 2px solid var(--action-shot-success);
+  font-size: 1em;
+  padding: 0.6em 2em;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shot-action-content .submit-button:hover:not(:disabled) {
+  background-color: var(--action-shot-fail);
+  border-color: var(--action-shot-fail);
+}
+
+.shot-action-content .submit-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
+
+.shot-action-content .cancel-button {
+  background-color: var(--comets-white);
+  color: var(--action-shot-fail);
+  border: 2px solid var(--action-shot-fail);
+  font-size: 0.95em;
+  padding: 0.6em 1.5em;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shot-action-content .cancel-button:hover {
+  background-color: var(--action-shot-fail);
+  color: var(--comets-white);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .shot-action-content {
+    padding: 2rem;
+  }
+
+  .shot-action-content .action-title {
+    font-size: 2em;
+  }
+
+  .shot-action-content .action-header-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .shot-action-content .field-container {
+    max-width: 100%;
+  }
+
+  .shot-action-content .zone-button {
+    font-size: 1.3em;
+  }
+
+  .shot-action-content .button-group {
+    flex-direction: column;
+  }
+
+  .shot-action-content .option-button {
+    min-width: 100%;
+  }
+
+  .shot-action-content .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .shot-action-content {
+    padding: 1.5rem;
+  }
+
+  .shot-action-content .action-title {
+    font-size: 1.8em;
+  }
+
+  .shot-action-content .zone-button {
+    font-size: 1em;
+  }
+}
