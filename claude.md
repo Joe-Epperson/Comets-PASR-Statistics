@@ -187,10 +187,11 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
   "Zone Ended": "number (1-14)",
   "Direction": "string",
   "Accuracy": "string",
-  "Pass Type": "string",
   "Result if Bad": "string (optional)"
 }
 ```
+
+**Note**: Pass Type field was removed from the data structure.
 
 **Data Collection Sections**:
 
@@ -222,16 +223,13 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
    - Clearance
    - Out of Bounds
 
-6. **Pass Type** (Required - Single Select):
-   - Lob
-   - Driven
-   - Instep
-
-7. **Result if Bad** (Conditional - Single Select):
+6. **Result if Bad** (Conditional - Single Select):
    - Only shown if Accuracy is "Clearance" or "Out of Bounds"
    - Top of the Box
    - 3 Lines Restart
    - Side Kick In
+   - Ball Won
+   - Ball Lost
 
 **Page Layout**:
 ```
@@ -256,11 +254,9 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 │  [Complete] [Incomplete] [Intercepted]                  │
 │  [Clearance] [Out of Bounds]                            │
 │                                                          │
-│  Pass Type:                                             │
-│  [Lob] [Driven] [Instep]                                │
-│                                                          │
 │  Result if Bad: (conditional)                           │
 │  [Top of the Box] [3 Lines Restart] [Side Kick In]      │
+│  [Ball Won] [Ball Lost]                                 │
 │                                                          │
 │         [Submit Action] [Cancel]                        │
 └──────────────────────────────────────────────────────────┘
@@ -283,8 +279,83 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 - Action Type: "Dribble"
 - Successful: true/false (from Data Collection screen)
 
-**Additional Data to Collect**:
-*To be specified in detail page design*
+**JSON Structure**:
+```json
+{
+  "Match": "string",
+  "Action Type": "Dribble",
+  "Successful": "boolean",
+  "Player": "string",
+  "Previous Action": "string",
+  "Zone Started": "number (1-14)",
+  "Zone Ended": "number (1-14)",
+  "Direction": "string",
+  "Beat Player": "string"
+}
+```
+
+**Data Collection Sections**:
+
+1. **Previous Action** (Auto-calculated):
+   - If `previousActionType` signal is empty → "Beginning of Play"
+   - Else if `previousActionSuccess` is true → value from `previousActionType` signal
+   - Else if `previousActionSuccess` is false → "Ball Won"
+
+2. **Zone Started** (Required - Single Select):
+   - 14 buttons arranged in soccer field layout (same as Pass action)
+   - Buttons numbered 1-14 matching field zones
+   - Single selection, stays selected when clicked
+   - Value: number (1-14)
+
+3. **Zone Ended** (Required - Single Select):
+   - Same 14-button field layout as Zone Started
+   - Separate field visualization
+   - Value: number (1-14)
+
+4. **Direction** (Required - Single Select):
+   - Forward
+   - Sideways
+   - Backward
+
+5. **Beat Player** (Required - Single Select):
+   - Yes
+   - No
+
+**Page Layout**:
+```
+┌──────────────────────────────────────────────────────────┐
+│  Dribble Action - Player: [Name] - Successful: [Yes/No] │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  Previous Action: [Auto-calculated display]             │
+│                                                          │
+│  ┌─────────── Zone Started ───────────┐                 │
+│  │ [Soccer field with 14 zone buttons]│                 │
+│  └─────────────────────────────────────┘                 │
+│                                                          │
+│  ┌─────────── Zone Ended ─────────────┐                 │
+│  │ [Soccer field with 14 zone buttons]│                 │
+│  └─────────────────────────────────────┘                 │
+│                                                          │
+│  Direction:                                             │
+│  [Forward] [Sideways] [Backward]                        │
+│                                                          │
+│  Beat Player:                                           │
+│  [Yes] [No]                                             │
+│                                                          │
+│         [Submit Action] [Cancel]                        │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Submit Behavior**:
+- "Submit Action" button enabled when all required fields selected
+- On submit:
+  - Build complete JSON object
+  - POST to MongoDB collection (endpoint: `/api/dribbles`)
+  - Update previous action signals (type, success, player)
+  - Clear current player and action type signals
+  - Navigate back to Data Collection screen
+  - Match and selected players persist for next action
 
 ### 3. Shot
 **Context Available on Detail Page**:
@@ -293,24 +364,279 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 - Action Type: "Shot"
 - Successful: true/false (from Data Collection screen)
 
-**Additional Data to Collect**:
-*To be specified in detail page design*
+**JSON Structure**:
+```json
+{
+  "Match": "string",
+  "Action Type": "Shot",
+  "Successful": "boolean",
+  "Player": "string",
+  "Previous Action": "string",
+  "Previous Action Player": "string (optional)",
+  "Zone Taken": "number (1-14)",
+  "Accuracy": "string",
+  "Result": "string"
+}
+```
+
+**Data Collection Sections**:
+
+1. **Previous Action** (Auto-calculated):
+   - If `previousActionType` signal is empty → "Beginning of Play"
+   - Else if `previousActionSuccess` is true → value from `previousActionType` signal
+   - Else if `previousActionSuccess` is false → "Ball Won"
+
+2. **Previous Action Player** (Auto-displayed - Conditional):
+   - Only shown if previous action was successful (not "Ball Won" or "Beginning of Play")
+   - Value pulled from `previousActionPlayer` signal
+   - Only included in JSON submission if previous action was successful
+
+3. **Zone Taken** (Required - Single Select):
+   - 14 buttons arranged in soccer field layout (same as other actions)
+   - Buttons numbered 1-14 matching field zones
+   - Single selection, stays selected when clicked
+   - Value: number (1-14)
+   - **Only ONE zone field** (unlike Pass/Dribble which have Zone Started and Zone Ended)
+
+4. **Accuracy** (Required - Single Select):
+   - On
+   - Off
+   - Block
+
+5. **Result** (Required - Single Select):
+   - Goal
+   - Save
+   - Boards Ball Kept
+   - Boards Ball Lost
+   - Out of Bounds
+   - Block Ball Kept
+   - Block Ball Lost
+
+**Page Layout**:
+```
+┌──────────────────────────────────────────────────────────┐
+│  Shot Action - Player: [Name] - Successful: [Yes/No]    │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  Previous Action: [Auto-calculated display]             │
+│  Previous Action Player: [Player name] (conditional)    │
+│                                                          │
+│  ┌─────────── Zone Taken ──────────┐                    │
+│  │ [Soccer field with 14 zone      │                    │
+│  │  buttons - 298px × 418px]       │                    │
+│  └─────────────────────────────────┘                     │
+│                                                          │
+│  Accuracy:                                              │
+│  [On] [Off] [Block]                                     │
+│                                                          │
+│  Result:                                                │
+│  [Goal] [Save]                                          │
+│  [Boards Ball Kept] [Boards Ball Lost]                  │
+│  [Out of Bounds]                                        │
+│  [Block Ball Kept] [Block Ball Lost]                    │
+│                                                          │
+│         [Submit Action] [Cancel]                        │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Submit Behavior**:
+- "Submit Action" button enabled when all required fields selected
+- On submit:
+  - Build complete JSON object
+  - Conditionally add "Previous Action Player" only if previous action was successful
+  - POST to MongoDB collection (endpoint: `/api/shots`)
+  - Update previous action signals (type='Shot', success, player)
+  - Clear current player and action type signals
+  - Navigate back to Data Collection screen
+  - Match and selected players persist for next action
 
 ### 4. String
-**Background Tracking**:
-- Automatically tracks consecutive successful actions
-- Increments on each successful Pass/Dribble/Shot
-- Resets on unsuccessful action
-- Implementation details to be specified
+**Background Tracking System**:
+- Automatically tracks consecutive successful Pass/Dribble/Shot actions
+- Does NOT include Set Piece actions
+- Submits to backend when:
+  1. An unsuccessful Pass/Dribble/Shot action occurs
+  2. User clicks "Play Ended" button on Data Collection page
+- Resets after each submission
+- No user-facing action page (background process only)
+
+**JSON Structure**:
+```json
+{
+  "Match": "string",
+  "String": ["Pass", "Dribble", "Shot", "Pass"],  // Array of action types
+  "Action Count": 4,      // Total actions in string
+  "Pass Count": 2,        // Count of Pass actions only
+  "Last Action": "Shot"   // Action that ended the string (Pass/Dribble/Shot/Play Ended)
+}
+```
+
+**Last Action Values**:
+- "Pass", "Dribble", "Shot" - The unsuccessful action that ended the string
+- "Play Ended" - String manually submitted via "Play Ended" button
+
+**Implementation**:
+- `currentString` signal in [signals.js](src/data/signals.js) stores array of action types
+- `submitString` helper function handles POST to backend
+- [PassAction.jsx](src/pages/actions/PassAction.jsx), [DribbleAction.jsx](src/pages/actions/DribbleAction.jsx), and [ShotAction.jsx](src/pages/actions/ShotAction.jsx) update string on successful submission
+- Pass/Dribble/Shot actions submit and reset string on unsuccessful submission
+- "Play Ended" button in [DataCollection.jsx](src/pages/DataCollection.jsx) submits final string
+
+**State Management**:
+- `currentString` signal (array) - tracks current string of actions
+- Signal persists during session but is reset after submission
+- No persistence on app close (partial strings are discarded)
+
+**Backend Endpoint**:
+- POST to `/api/strings` collection in MongoDB
 
 ### 5. Set Piece
 **Context Available on Detail Page**:
 - Match (from Home screen)
 - Action Type: "Set Piece"
-- Players selected within Set Piece flow (not pre-selected)
+- **Successful: Calculated automatically** (Shot Taken = "Yes" AND Accuracy = "On" → true, otherwise false)
+- **Players selected within Set Piece flow** (not pre-selected from Data Collection)
 
-**Additional Data to Collect**:
-*To be specified in detail page design*
+**JSON Structure**:
+```json
+{
+  "Match": "string",
+  "Action Type": "Set Piece",
+  "Successful": "boolean",
+  "Set Piece Type": "string",
+  "Player on Ball": "string",
+  "Other Players": "array of strings (3-5 players)",
+  "Shot Taken": "string (Yes/No)",
+  "Zone Taken": "number (1-14) - optional",
+  "Accuracy": "string - optional",
+  "Result": "string - optional",
+  "Passes to Result": "number (0-6)"
+}
+```
+
+**Data Collection Sections**:
+
+1. **Set Piece Type** (Required - Single Select):
+   - TOTB (Top of the Box)
+   - 3 Lines Restart
+   - Corner Right
+   - Corner Left
+   - Shootout
+   - Penalty
+
+2. **Player on Ball** (Required - Single Select):
+   - Dropdown selector
+   - Select 1 from all 16 selected players
+   - Not pre-selected from Data Collection screen
+
+3. **Other Players** (Required - Multi-Select):
+   - Checkbox grid interface
+   - Select 3-5 players from remaining 15 players (excluding Player on Ball)
+   - Shows count: "Selected: X/5 (minimum 3)"
+   - Checkboxes disable when 5 players selected
+   - Visual indication for selected/disabled state
+
+4. **Shot Taken** (Required - Single Select):
+   - Yes
+   - No
+   - Determines if Zone Taken, Accuracy, Result fields appear
+
+5. **Zone Taken** (Conditional - Single Select):
+   - Only visible if Shot Taken = "Yes"
+   - 14 buttons arranged in soccer field layout (same as Shot action)
+   - Value: number (1-14)
+
+6. **Accuracy** (Conditional - Single Select):
+   - Only visible if Shot Taken = "Yes"
+   - On
+   - Off
+   - Block
+
+7. **Result** (Conditional - Single Select):
+   - Only visible if Shot Taken = "Yes"
+   - Goal
+   - Save
+   - Boards Ball Kept
+   - Boards Ball Lost
+   - Out of Bounds
+   - Block Ball Kept
+   - Block Ball Lost
+
+8. **Passes to Result** (Required - Single Select):
+   - 0, 1, 2, 3, 4, 5, 6
+   - Number of passes leading to the result
+
+**Page Layout**:
+```
+┌──────────────────────────────────────────────────────────┐
+│  Set Piece Action - Successful: [Yes/No]                │
+├──────────────────────────────────────────────────────────┤
+│ ╔════════════════════════════════════════════════════╗  │
+│ ║ [Scrollable Content Area]                          ║  │
+│ ║                                                    ║  │
+│ ║ Set Piece Type:                                   ║  │
+│ ║ [TOTB] [3 Lines Restart] [Corner Right]           ║  │
+│ ║ [Corner Left] [Shootout] [Penalty]                ║  │
+│ ║                                                    ║  │
+│ ║ Player on Ball:                                   ║  │
+│ ║ [Dropdown: Select player...]                      ║  │
+│ ║                                                    ║  │
+│ ║ Other Players (Select 3-5): [X/5 selected]       ║  │
+│ ║ ☐ Player 1  ☐ Player 2  ☐ Player 3  ☐ Player 4   ║  │
+│ ║ ☐ Player 5  ☐ Player 6  ... (grid of 16)         ║  │
+│ ║                                                    ║  │
+│ ║ Shot Taken:                                       ║  │
+│ ║ [Yes] [No]                                        ║  │
+│ ║                                                    ║  │
+│ ║ --- IF Shot Taken = Yes ---                      ║  │
+│ ║ Zone Taken: [Soccer field 14 zones]              ║  │
+│ ║ Accuracy: [On] [Off] [Block]                      ║  │
+│ ║ Result: [Goal] [Save] [Boards...] ...            ║  │
+│ ║ --- END IF ---                                    ║  │
+│ ║                                                    ║  │
+│ ║ Passes to Result:                                 ║  │
+│ ║ [0] [1] [2] [3] [4] [5] [6]                       ║  │
+│ ╚════════════════════════════════════════════════════╝  │
+│                                                          │
+│         [Submit Action] [Cancel]                        │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Submit Behavior**:
+- "Submit Action" button enabled when all required fields selected
+- Validates:
+  - Set Piece Type selected
+  - Player on Ball selected
+  - Other Players: 3-5 selected (not Player on Ball)
+  - Shot Taken selected
+  - If Shot Taken = "Yes": Zone Taken, Accuracy, Result all selected
+  - Passes to Result selected
+- On submit:
+  - **Calculate "Successful" field**: Shot Taken = "Yes" AND Accuracy = "On" → true, otherwise false
+  - Build complete JSON object
+  - "Other Players" sent as array
+  - "Passes to Result" converted to number
+  - Conditionally add Zone Taken, Accuracy, Result only if Shot Taken = "Yes"
+  - POST to MongoDB collection (endpoint: `/api/setpieces`)
+  - Clear current action signals (NO previous action tracking for Set Pieces)
+  - Navigate back to Data Collection screen
+  - Match and selected players persist for next action
+
+**Success Calculation Logic**:
+- **Successful = true**: Shot Taken = "Yes" AND Accuracy = "On"
+- **Successful = false**: All other cases (Shot Taken = "No", OR Shot Taken = "Yes" with Accuracy = "Off" or "Block")
+- Success badge updates dynamically as user selects Shot Taken and Accuracy
+
+**Key Differences from Other Actions**:
+- **No currentPlayer signal usage** - Players selected within Set Piece flow
+- **Auto-calculated success** - Based on Shot Taken and Accuracy, not pre-selected
+- **Multi-player selection** - 1 player on ball + 3-5 other players
+- **Conditional fields** - Zone Taken, Accuracy, Result only if Shot Taken = "Yes"
+- **No Previous Action tracking** - Set Pieces are standalone events
+- **Scrollable layout** - More fields than other actions, uses vertical scrolling
+- **Red color scheme** - Matches Comets branding for special plays
+- **Array field** - "Other Players" is an array in JSON
+- **Numeric field** - "Passes to Result" is a number (0-6)
 
 ---
 
@@ -668,14 +994,23 @@ src/
 ├── pages/
 │   ├── Home.jsx (player & match selection)
 │   ├── Home.css (two-column layout, checkboxes)
-│   ├── DataCollection.jsx (placeholder)
+│   ├── DataCollection.jsx (main data collection screen)
 │   ├── DataCollection.css
 │   ├── AnalyzeData.jsx (placeholder)
-│   └── AnalyzeData.css
+│   ├── AnalyzeData.css
+│   └── actions/
+│       ├── PassAction.jsx (Pass action detail page)
+│       ├── PassAction.css
+│       ├── DribbleAction.jsx (Dribble action detail page)
+│       ├── DribbleAction.css
+│       ├── ShotAction.jsx (Shot action detail page)
+│       ├── ShotAction.css
+│       ├── SetPieceAction.jsx (Set Piece action detail page)
+│       └── SetPieceAction.css
 ├── data/
 │   ├── matches.js (24 matches for 2025-2026 season)
 │   ├── players.js (25 KC Comets players)
-│   └── signals.js (selectedMatch, selectedPlayers)
+│   └── signals.js (state management signals)
 ├── App.jsx (routing configuration)
 ├── App.css
 ├── main.jsx
@@ -718,5 +1053,5 @@ react({
 
 ---
 
-**Last Updated**: 2025-11-16
-**Current Phase**: Home Page Complete - Ready for Data Collection Screen Development
+**Last Updated**: 2025-11-30
+**Current Phase**: Action Detail Pages - Pass, Dribble, Shot, and Set Piece Complete

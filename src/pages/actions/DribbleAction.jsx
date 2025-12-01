@@ -11,17 +11,16 @@ import {
   currentString,
   submitString
 } from '../../data/signals';
-import './PassAction.css';
+import './DribbleAction.css';
 
-function PassAction() {
+function DribbleAction() {
   const navigate = useNavigate();
 
   // Local state for form fields
   const [zoneStarted, setZoneStarted] = useState(null);
   const [zoneEnded, setZoneEnded] = useState(null);
   const [direction, setDirection] = useState('');
-  const [accuracy, setAccuracy] = useState('');
-  const [resultIfBad, setResultIfBad] = useState('');
+  const [beatPlayer, setBeatPlayer] = useState('');
 
   // Calculate previous action display
   const getPreviousActionDisplay = () => {
@@ -34,16 +33,9 @@ function PassAction() {
     return 'Ball Won';
   };
 
-  // Check if Result if Bad should be shown
-  const showResultIfBad = accuracy === 'Clearance' || accuracy === 'Out of Bounds';
-
   // Check if form is valid
   const isFormValid = () => {
-    const baseValid = zoneStarted !== null && zoneEnded !== null && direction && accuracy;
-    if (showResultIfBad) {
-      return baseValid && resultIfBad;
-    }
-    return baseValid;
+    return zoneStarted !== null && zoneEnded !== null && direction && beatPlayer;
   };
 
   const handleSubmit = async () => {
@@ -51,26 +43,21 @@ function PassAction() {
 
     const actionData = {
       "Match": selectedMatch.value,
-      "Action Type": "Pass",
+      "Action Type": "Dribble",
       "Successful": isSuccessful.value,
       "Player": currentPlayer.value,
       "Previous Action": getPreviousActionDisplay(),
       "Zone Started": zoneStarted,
       "Zone Ended": zoneEnded,
       "Direction": direction,
-      "Accuracy": accuracy,
+      "Beat Player": beatPlayer,
     };
 
-    // Only add Result if Bad if applicable
-    if (showResultIfBad) {
-      actionData["Result if Bad"] = resultIfBad;
-    }
-
-    console.log('Submitting Pass Action:', actionData);
+    console.log('Submitting Dribble Action:', actionData);
 
     // POST to MongoDB via backend
     try {
-      const response = await fetch('http://localhost:3001/api/passes', {
+      const response = await fetch('http://localhost:3001/api/dribbles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(actionData)
@@ -79,21 +66,21 @@ function PassAction() {
       const result = await response.json();
 
       if (result.success) {
-        console.log('✅ Pass action saved to MongoDB:', result.insertedId);
+        console.log('✅ Dribble action saved to MongoDB:', result.insertedId);
 
         // STRING TRACKING LOGIC
         if (isSuccessful.value) {
-          // Successful pass - add to current string
-          currentString.value = [...currentString.value, "Pass"];
-          console.log('📊 String updated (added Pass):', currentString.value);
+          // Successful dribble - add to current string
+          currentString.value = [...currentString.value, "Dribble"];
+          console.log('📊 String updated (added Dribble):', currentString.value);
         } else {
-          // Unsuccessful pass - submit current string and reset
-          await submitString(selectedMatch.value, "Pass");
-          console.log('📊 String submitted and reset (unsuccessful Pass)');
+          // Unsuccessful dribble - submit current string and reset
+          await submitString(selectedMatch.value, "Dribble");
+          console.log('📊 String submitted and reset (unsuccessful Dribble)');
         }
       } else {
-        console.error('❌ Error saving pass action:', result.error);
-        alert('Failed to save pass action. Please try again.');
+        console.error('❌ Error saving dribble action:', result.error);
+        alert('Failed to save dribble action. Please try again.');
         return;
       }
     } catch (error) {
@@ -103,7 +90,7 @@ function PassAction() {
     }
 
     // Update previous action signals
-    previousActionType.value = 'Pass';
+    previousActionType.value = 'Dribble';
     previousActionSuccess.value = isSuccessful.value;
     previousActionPlayer.value = currentPlayer.value;
 
@@ -121,9 +108,9 @@ function PassAction() {
   };
 
   return (
-    <div className="pass-action-container">
-      <div className="pass-action-content">
-        <h1 className="action-title">Pass Action</h1>
+    <div className="dribble-action-container">
+      <div className="dribble-action-content">
+        <h1 className="action-title">Dribble Action</h1>
         <div className="action-header-info">
           <span className="player-name">Player: {currentPlayer.value}</span>
           <span className={`success-badge ${isSuccessful.value ? 'success' : 'fail'}`}>
@@ -189,45 +176,21 @@ function PassAction() {
               </div>
             </div>
 
-            {/* Accuracy */}
+            {/* Beat Player */}
             <div className="form-section">
-              <h3>Accuracy</h3>
+              <h3>Beat Player</h3>
               <div className="button-group">
-                {['Complete', 'Incomplete', 'Intercepted', 'Clearance', 'Out of Bounds'].map((acc) => (
+                {['Yes', 'No'].map((option) => (
                   <button
-                    key={acc}
-                    className={`option-button ${accuracy === acc ? 'active' : ''}`}
-                    onClick={() => {
-                      setAccuracy(acc);
-                      // Clear Result if Bad if accuracy changes to non-applicable value
-                      if (acc !== 'Clearance' && acc !== 'Out of Bounds') {
-                        setResultIfBad('');
-                      }
-                    }}
+                    key={option}
+                    className={`option-button ${beatPlayer === option ? 'active' : ''}`}
+                    onClick={() => setBeatPlayer(option)}
                   >
-                    {acc}
+                    {option}
                   </button>
                 ))}
               </div>
             </div>
-
-            {/* Result if Bad (Conditional) */}
-            {showResultIfBad && (
-              <div className="form-section">
-                <h3>Result if Bad</h3>
-                <div className="button-group">
-                  {['Top of the Box', '3 Lines Restart', 'Side Kick In', 'Ball Won', 'Ball Lost'].map((result) => (
-                    <button
-                      key={result}
-                      className={`option-button ${resultIfBad === result ? 'active' : ''}`}
-                      onClick={() => setResultIfBad(result)}
-                    >
-                      {result}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -249,4 +212,4 @@ function PassAction() {
   );
 }
 
-export default PassAction;
+export default DribbleAction;

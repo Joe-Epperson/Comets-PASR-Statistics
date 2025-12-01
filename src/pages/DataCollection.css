@@ -23,6 +23,7 @@
 .header-section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
   position: relative;
@@ -49,6 +50,31 @@
 .header-text {
   flex: 1;
   text-align: center;
+}
+
+.play-ended-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: white;
+  background-color: var(--comets-red);
+  border: 2px solid var(--comets-red);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.play-ended-button:hover {
+  background-color: var(--comets-red-dark);
+  border-color: var(--comets-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(227, 25, 55, 0.3);
+}
+
+.play-ended-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(227, 25, 55, 0.3);
 }
 
 .page-title {
