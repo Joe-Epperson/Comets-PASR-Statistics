@@ -76,20 +76,21 @@ const matches = [
 
 **Visual Layout**:
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Data Collection                          │
-│         Match: [Selected Match Name]                        │
-├───────────────────────┬─────────────────────────────────────┤
-│  Selected Players     │    Action Buttons                   │
-│  (16 from roster)     │                                     │
-│                       │  ┌────────────────────────────┐     │
-│  ○ Player 1           │  │ [Pass +] [Shot +] [Dribble +]   │
-│  ● Player 2 (active)  │  │ [Pass -] [Shot -] [Dribble -]   │
-│  ○ Player 3           │  └────────────────────────────┘     │
-│  ...                  │                                     │
-│                       │  ────────────────────────            │
-│                       │  [Set Piece] (always enabled)       │
-└───────────────────────┴─────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│  [← Back]          Data Collection                [Field Controls]  │
+│                Match: [Selected Match Name]                         │
+│  [Comets Defending: ◉ Left ○ Right]  [Foul]  [Play Ended]         │
+├───────────────────────┬─────────────────────────────────────────────┤
+│  Selected Players     │    Action Buttons                           │
+│  (16 from roster)     │                                             │
+│                       │  ┌────────────────────────────┐             │
+│  ○ Player 1           │  │ [Pass +] [Shot +] [Dribble +]           │
+│  ● Player 2 (active)  │  │ [Pass -] [Shot -] [Dribble -]           │
+│  ○ Player 3           │  └────────────────────────────┘             │
+│  ...                  │                                             │
+│                       │  ────────────────────────                   │
+│                       │  [Set Piece] (always enabled)               │
+└───────────────────────┴─────────────────────────────────────────────┘
 
 Button Layout Detail:
 Row 1 (Top):    [Pass +]     [Shot +]     [Dribble +]
@@ -144,9 +145,11 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 **State Management**:
 - `selectedMatch` - from Home screen (already stored)
 - `selectedPlayers` - array of 16 players from Home screen (already stored)
-- `currentPlayer` - currently selected player for action (new signal)
-- `currentActionType` - Pass/Dribble/Shot/SetPiece (new signal)
-- `isSuccessful` - true/false for action outcome (new signal)
+- `currentPlayer` - currently selected player for action
+- `currentActionType` - Pass/Dribble/Shot/SetPiece
+- `isSuccessful` - true/false for action outcome
+- `lastSuccessfulZoneEnded` - stores Zone Ended from previous successful Pass/Dribble for auto-selection
+- `cometsSide` - field orientation ('left' or 'right'), persists during session, defaults to 'left'
 
 **String Tracking** (Background):
 - Tracks consecutive successful actions automatically
@@ -200,30 +203,42 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
    - Else if `previousActionSuccess` is true → value from `previousActionType` signal
    - Else if `previousActionSuccess` is false → "Ball Won"
 
-2. **Zone Started** (Required - Single Select):
-   - 14 buttons arranged in soccer field layout (see reference image)
-   - Buttons numbered 1-14 matching field zones
-   - Single selection, stays selected when clicked
-   - Value: number (1-14)
+2. **Zone Selection** (Required - Single Field with Dual Selection):
+   - **Single soccer field** with 14 numbered zones (298px × 418px)
+   - **Field Orientation**: Controlled by "Comets Defending" toggle on Data Collection page
+     - Left (default): Vertical orientation, Zone 1 at bottom
+     - Right: Field rotates 90° clockwise
+   - **Zone Selection Methods**:
+     - **Regular Click**: Selects Zone Started (highlighted in orange)
+     - **Shift+Click**: Selects Zone Ended (highlighted in blue)
+     - Both zones can be selected simultaneously with different colors
+     - If same zone selected for both: Shows diagonal gradient (orange → blue)
+   - **Visual Indicators**:
+     - Zone labels display: "Zone Started: X | Zone Ended: Y"
+     - Color-coded squares next to labels (orange for Started, blue for Ended)
+     - Instruction text: "Click to select Zone Started, Shift+Click for Zone Ended"
+     - Blue arrow drawn from Zone Started center to Zone Ended center
+   - **Auto-Selection**: Zone Started automatically pre-filled with Zone Ended from previous successful Pass/Dribble action
+   - **Arrow Visualization**:
+     - Only appears when both zones are selected
+     - Hides if same zone selected for both
+     - Updates in real-time as zones change
+     - Rotates with field orientation
+   - Values: Zone Started (1-14), Zone Ended (1-14)
 
-3. **Zone Ended** (Required - Single Select):
-   - Same 14-button field layout as Zone Started
-   - Separate field visualization
-   - Value: number (1-14)
-
-4. **Direction** (Required - Single Select):
+3. **Direction** (Required - Single Select):
    - Forward
    - Sideways
    - Backward
 
-5. **Accuracy** (Required - Single Select):
-   - Complete
-   - Incomplete
-   - Intercepted
-   - Clearance
-   - Out of Bounds
+4. **Accuracy** (Required - Conditional):
+   - **Successful Pass**: Auto-filled as "Complete" (displayed as read-only, no selection needed)
+   - **Unsuccessful Pass**: Select from:
+     - Incomplete
+     - Clearance
+     - Out of Bounds
 
-6. **Result if Bad** (Conditional - Single Select):
+5. **Result if Bad** (Conditional - Single Select):
    - Only shown if Accuracy is "Clearance" or "Out of Bounds"
    - Top of the Box
    - 3 Lines Restart
@@ -239,20 +254,22 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 │                                                          │
 │  Previous Action: [Auto-calculated display]             │
 │                                                          │
-│  ┌─────────── Zone Started ───────────┐                 │
-│  │ [Soccer field with 14 zone buttons]│                 │
-│  └─────────────────────────────────────┘                 │
-│                                                          │
-│  ┌─────────── Zone Ended ─────────────┐                 │
-│  │ [Soccer field with 14 zone buttons]│                 │
-│  └─────────────────────────────────────┘                 │
+│  Zone Selection                                         │
+│  ┌──────────────────────────────────┐                   │
+│  │ Zone Started: 7 | Zone Ended: 10 │ (colored labels) │
+│  └──────────────────────────────────┘                   │
+│  Click to select Zone Started, Shift+Click for Ended   │
+│  ┌─────────── Soccer Field ──────────┐                  │
+│  │ [14 zones with dual highlighting] │                  │
+│  │ [Blue arrow: Started → Ended]     │                  │
+│  │ (Rotates based on Comets toggle)  │                  │
+│  └───────────────────────────────────┘                  │
 │                                                          │
 │  Direction:                                             │
 │  [Forward] [Sideways] [Backward]                        │
 │                                                          │
 │  Accuracy:                                              │
-│  [Complete] [Incomplete] [Intercepted]                  │
-│  [Clearance] [Out of Bounds]                            │
+│  [Complete] [Incomplete] [Clearance] [Out of Bounds]   │
 │                                                          │
 │  Result if Bad: (conditional)                           │
 │  [Top of the Box] [3 Lines Restart] [Side Kick In]      │
@@ -301,23 +318,35 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
    - Else if `previousActionSuccess` is true → value from `previousActionType` signal
    - Else if `previousActionSuccess` is false → "Ball Won"
 
-2. **Zone Started** (Required - Single Select):
-   - 14 buttons arranged in soccer field layout (same as Pass action)
-   - Buttons numbered 1-14 matching field zones
-   - Single selection, stays selected when clicked
-   - Value: number (1-14)
+2. **Zone Selection** (Required - Single Field with Dual Selection):
+   - **Single soccer field** with 14 numbered zones (298px × 418px)
+   - **Field Orientation**: Controlled by "Comets Defending" toggle on Data Collection page
+     - Left (default): Vertical orientation, Zone 1 at bottom
+     - Right: Field rotates 90° clockwise
+   - **Zone Selection Methods**:
+     - **Regular Click**: Selects Zone Started (highlighted in purple)
+     - **Shift+Click**: Selects Zone Ended (highlighted in blue)
+     - Both zones can be selected simultaneously with different colors
+     - If same zone selected for both: Shows diagonal gradient (purple → blue)
+   - **Visual Indicators**:
+     - Zone labels display: "Zone Started: X | Zone Ended: Y"
+     - Color-coded squares next to labels (purple for Started, blue for Ended)
+     - Instruction text: "Click to select Zone Started, Shift+Click for Zone Ended"
+     - Blue arrow drawn from Zone Started center to Zone Ended center
+   - **Auto-Selection**: Zone Started automatically pre-filled with Zone Ended from previous successful Pass/Dribble action
+   - **Arrow Visualization**:
+     - Only appears when both zones are selected
+     - Hides if same zone selected for both
+     - Updates in real-time as zones change
+     - Rotates with field orientation
+   - Values: Zone Started (1-14), Zone Ended (1-14)
 
-3. **Zone Ended** (Required - Single Select):
-   - Same 14-button field layout as Zone Started
-   - Separate field visualization
-   - Value: number (1-14)
-
-4. **Direction** (Required - Single Select):
+3. **Direction** (Required - Single Select):
    - Forward
    - Sideways
    - Backward
 
-5. **Beat Player** (Required - Single Select):
+4. **Beat Player** (Required - Single Select):
    - Yes
    - No
 
@@ -329,13 +358,16 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 │                                                          │
 │  Previous Action: [Auto-calculated display]             │
 │                                                          │
-│  ┌─────────── Zone Started ───────────┐                 │
-│  │ [Soccer field with 14 zone buttons]│                 │
-│  └─────────────────────────────────────┘                 │
-│                                                          │
-│  ┌─────────── Zone Ended ─────────────┐                 │
-│  │ [Soccer field with 14 zone buttons]│                 │
-│  └─────────────────────────────────────┘                 │
+│  Zone Selection                                         │
+│  ┌──────────────────────────────────┐                   │
+│  │ Zone Started: 7 | Zone Ended: 10 │ (colored labels) │
+│  └──────────────────────────────────┘                   │
+│  Click to select Zone Started, Shift+Click for Ended   │
+│  ┌─────────── Soccer Field ──────────┐                  │
+│  │ [14 zones with dual highlighting] │                  │
+│  │ [Blue arrow: Started → Ended]     │                  │
+│  │ (Rotates based on Comets toggle)  │                  │
+│  └───────────────────────────────────┘                  │
 │                                                          │
 │  Direction:                                             │
 │  [Forward] [Sideways] [Backward]                        │
@@ -452,11 +484,12 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 
 ### 4. String
 **Background Tracking System**:
-- Automatically tracks consecutive successful Pass/Dribble/Shot actions
+- Automatically tracks consecutive successful Pass/Dribble actions and ALL Shot actions
 - Does NOT include Set Piece actions
 - Submits to backend when:
-  1. An unsuccessful Pass/Dribble/Shot action occurs
-  2. User clicks "Play Ended" button on Data Collection page
+  1. An unsuccessful Pass or Dribble action occurs
+  2. ANY Shot action occurs (successful or unsuccessful - all shots end the string)
+  3. User clicks "Play Ended" button on Data Collection page
 - Resets after each submission
 - No user-facing action page (background process only)
 
@@ -472,15 +505,22 @@ Row 2 (Bottom): [Pass -]     [Shot -]     [Dribble -]
 ```
 
 **Last Action Values**:
-- "Pass", "Dribble", "Shot" - The unsuccessful action that ended the string
+- "Pass" - Unsuccessful Pass that ended the string
+- "Dribble" - Unsuccessful Dribble that ended the string
+- "Shot" - Shot with any result other than Goal or Save
+- "Goal" - Shot that resulted in a goal
+- "Shot Saved" - Shot that resulted in a save
+- "Foul" - String manually submitted via "Foul" button
 - "Play Ended" - String manually submitted via "Play Ended" button
 
 **Implementation**:
 - `currentString` signal in [signals.js](src/data/signals.js) stores array of action types
 - `submitString` helper function handles POST to backend
-- [PassAction.jsx](src/pages/actions/PassAction.jsx), [DribbleAction.jsx](src/pages/actions/DribbleAction.jsx), and [ShotAction.jsx](src/pages/actions/ShotAction.jsx) update string on successful submission
-- Pass/Dribble/Shot actions submit and reset string on unsuccessful submission
-- "Play Ended" button in [DataCollection.jsx](src/pages/DataCollection.jsx) submits final string
+- [PassAction.jsx](src/pages/actions/PassAction.jsx) and [DribbleAction.jsx](src/pages/actions/DribbleAction.jsx) add to string on successful submission
+- Pass/Dribble actions submit and reset string on unsuccessful submission
+- [ShotAction.jsx](src/pages/actions/ShotAction.jsx) ALWAYS adds Shot to string and submits immediately with appropriate Last Action based on result
+- "Foul" button in [DataCollection.jsx](src/pages/DataCollection.jsx) submits string with "Foul" as Last Action
+- "Play Ended" button in [DataCollection.jsx](src/pages/DataCollection.jsx) submits string with "Play Ended" as Last Action
 
 **State Management**:
 - `currentString` signal (array) - tracks current string of actions
@@ -988,6 +1028,47 @@ This design philosophy enables rapid-fire data collection where users can comple
 - Responsive breakpoints for mobile-first design
 - Smooth transitions and hover effects
 
+#### Zone Selection Enhancements ✓
+**Advanced zone selection system for Pass and Dribble actions**
+
+**Features Implemented**:
+1. **Auto-Select Previous Zone**:
+   - Zone Ended from previous successful action auto-fills Zone Started in next action
+   - Uses `lastSuccessfulZoneEnded` signal for persistence
+   - Cleared on unsuccessful actions
+   - Works across Pass and Dribble actions
+
+2. **Single Field with Dual Selection**:
+   - Merged two separate zone fields into one
+   - Regular click selects Zone Started (action color: orange/purple)
+   - Shift+Click selects Zone Ended (blue)
+   - Dual highlighting with different colors
+   - Visual labels show both selections simultaneously
+   - Diagonal gradient when same zone selected for both
+
+3. **Field Orientation Toggle**:
+   - "Comets Defending: Left | Right" toggle on Data Collection page
+   - Controlled by `cometsSide` signal (defaults to 'left')
+   - Field rotates 90° clockwise when set to 'Right'
+   - CSS transform animation for smooth rotation
+   - Persists during session, resets on page refresh
+
+4. **Visual Arrow Between Zones**:
+   - SVG arrow drawn from Zone Started center to Zone Ended center
+   - Only appears when both zones selected
+   - Hides if same zone selected for both
+   - Updates in real-time as zones change
+   - Blue color (var(--comets-blue-light))
+   - Rotates with field orientation
+   - Arrowhead marker for direction indication
+
+**Implementation Details**:
+- Zone center positions calculated using grid-based algorithm
+- Separate marker IDs for Pass and Dribble arrows to avoid conflicts
+- CSS classes: `.zone-started`, `.zone-ended`, `.zone-both`
+- Shift-key detection in onClick handlers
+- Applied to both PassAction and DribbleAction components
+
 #### Project Structure ✓
 ```
 src/
@@ -1053,5 +1134,5 @@ react({
 
 ---
 
-**Last Updated**: 2025-11-30
-**Current Phase**: Action Detail Pages - Pass, Dribble, Shot, and Set Piece Complete
+**Last Updated**: 2025-12-02
+**Current Phase**: Zone Selection Enhancements Complete - Advanced dual-selection system with auto-fill, field rotation, and arrow visualization

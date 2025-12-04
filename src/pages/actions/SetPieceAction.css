@@ -225,17 +225,26 @@
 .setpiece-action-content .field-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
-  aspect-ratio: 298 / 418;
+  max-width: 560px;
+  aspect-ratio: 418 / 298; /* Swapped for horizontal orientation */
   margin: 0 auto;
   background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
   border: 2px solid var(--comets-white);
   border-radius: 6px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr); /* Swapped: 6 columns for horizontal */
+  grid-template-rows: repeat(3, 1fr); /* Swapped: 3 rows for horizontal */
   gap: 2px;
   padding: 4px;
+  transition: transform 0.3s ease;
+}
+
+.setpiece-action-content .field-container.field-rotated {
+  transform: rotate(180deg); /* Right side: flip 180 degrees */
+}
+
+.setpiece-action-content .field-container.field-rotated .zone-button {
+  transform: rotate(180deg); /* Counter-rotate numbers to keep them readable */
 }
 
 .setpiece-action-content .zone-button {
@@ -265,21 +274,27 @@
   transform: scale(1.05);
 }
 
-/* Zone positioning */
-.setpiece-action-content .zone-1 { grid-column: 2; grid-row: 6; }
-.setpiece-action-content .zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 3px 3px 20px 3px; }
-.setpiece-action-content .zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 3px 3px 3px 20px; }
-.setpiece-action-content .zone-4 { grid-column: 2; grid-row: 5; }
-.setpiece-action-content .zone-5 { grid-column: 3; grid-row: 4; }
-.setpiece-action-content .zone-6 { grid-column: 1; grid-row: 4; }
-.setpiece-action-content .zone-7 { grid-column: 2; grid-row: 4; }
-.setpiece-action-content .zone-8 { grid-column: 3; grid-row: 3; }
-.setpiece-action-content .zone-9 { grid-column: 1; grid-row: 3; }
-.setpiece-action-content .zone-10 { grid-column: 2; grid-row: 3; }
-.setpiece-action-content .zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 3px 20px 3px 3px; }
-.setpiece-action-content .zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 20px 3px 3px 3px; }
-.setpiece-action-content .zone-13 { grid-column: 2; grid-row: 1; }
-.setpiece-action-content .zone-14 { grid-column: 2; grid-row: 2; }
+/* Zone positioning for horizontal field (6 columns × 3 rows) */
+.setpiece-action-content .zone-1 { grid-column: 1; grid-row: 2; }
+.setpiece-action-content .zone-2 { grid-column: 1 / 3; grid-row: 3; border-radius: 3px 3px 3px 20px; }
+.setpiece-action-content .zone-3 { grid-column: 1 / 3; grid-row: 1; border-radius: 20px 3px 3px 3px; }
+.setpiece-action-content .zone-4 { grid-column: 2; grid-row: 2; }
+.setpiece-action-content .zone-5 { grid-column: 3; grid-row: 3; }
+.setpiece-action-content .zone-6 { grid-column: 3; grid-row: 1; }
+.setpiece-action-content .zone-7 { grid-column: 3; grid-row: 2; }
+.setpiece-action-content .zone-8 { grid-column: 4; grid-row: 3; }
+.setpiece-action-content .zone-9 { grid-column: 4; grid-row: 1; }
+.setpiece-action-content .zone-10 { grid-column: 4; grid-row: 2; }
+.setpiece-action-content .zone-11 { grid-column: 5 / 7; grid-row: 3; border-radius: 3px 3px 20px 3px; }
+.setpiece-action-content .zone-12 { grid-column: 5 / 7; grid-row: 1; border-radius: 3px 20px 3px 3px; }
+.setpiece-action-content .zone-13 { grid-column: 5; grid-row: 2; }
+.setpiece-action-content .zone-14 { grid-column: 6; grid-row: 2; }
+
+/* When field is rotated 180 degrees, flip the corner radii */
+.setpiece-action-content .field-container.field-rotated .zone-2 { border-radius: 3px 20px 3px 3px; }
+.setpiece-action-content .field-container.field-rotated .zone-3 { border-radius: 3px 3px 20px 3px; }
+.setpiece-action-content .field-container.field-rotated .zone-11 { border-radius: 20px 3px 3px 3px; }
+.setpiece-action-content .field-container.field-rotated .zone-12 { border-radius: 3px 3px 3px 20px; }
 
 /* Action Buttons */
 .setpiece-action-content .action-buttons {

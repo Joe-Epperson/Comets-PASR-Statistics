@@ -17,6 +17,12 @@ export const previousActionPlayer = signal('');
 // String tracking (background system for consecutive successful actions)
 export const currentString = signal([]);
 
+// Zone tracking (auto-select previous successful zone)
+export const lastSuccessfulZoneEnded = signal(null);
+
+// Field orientation tracking (Comets defending left or right)
+export const cometsSide = signal('left');
+
 // Helper function to submit a string to backend
 export const submitString = async (matchName, lastAction = "Play Ended") => {
   if (currentString.value.length === 0) {

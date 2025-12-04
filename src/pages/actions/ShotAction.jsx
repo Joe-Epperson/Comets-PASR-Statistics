@@ -9,7 +9,8 @@ import {
   previousActionSuccess,
   previousActionPlayer,
   currentString,
-  submitString
+  submitString,
+  cometsSide
 } from '../../data/signals';
 import './ShotAction.css';
 
@@ -77,15 +78,23 @@ function ShotAction() {
         console.log('✅ Shot action saved to MongoDB:', resultData.insertedId);
 
         // STRING TRACKING LOGIC
-        if (isSuccessful.value) {
-          // Successful shot - add to current string
-          currentString.value = [...currentString.value, "Shot"];
-          console.log('📊 String updated (added Shot):', currentString.value);
+        // All shots (successful or unsuccessful) are added to the string and then submitted
+        currentString.value = [...currentString.value, "Shot"];
+        console.log('📊 String updated (added Shot):', currentString.value);
+
+        // Determine Last Action based on result
+        let lastAction;
+        if (result === "Goal") {
+          lastAction = "Goal";
+        } else if (result === "Save") {
+          lastAction = "Shot Saved";
         } else {
-          // Unsuccessful shot - submit current string and reset
-          await submitString(selectedMatch.value, "Shot");
-          console.log('📊 String submitted and reset (unsuccessful Shot)');
+          lastAction = "Shot";
         }
+
+        // All shots end the string
+        await submitString(selectedMatch.value, lastAction);
+        console.log(`📊 String submitted and reset (${lastAction})`);
       } else {
         console.error('❌ Error saving shot action:', resultData.error);
         alert('Failed to save shot action. Please try again.');
@@ -149,7 +158,7 @@ function ShotAction() {
           {/* Left Column - Single Zone Taken Field */}
           <div className="zone-section">
             <h3>Zone Taken</h3>
-            <div className="field-container">
+            <div className={`field-container ${cometsSide.value === 'right' ? 'field-rotated' : ''}`}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((zone) => (
                 <button
                   key={zone}

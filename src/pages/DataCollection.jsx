@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { selectedMatch, selectedPlayers, currentPlayer, currentActionType, isSuccessful, currentString, submitString } from '../data/signals';
+import { selectedMatch, selectedPlayers, currentPlayer, currentActionType, isSuccessful, currentString, submitString, cometsSide } from '../data/signals';
 import './DataCollection.css';
 
 function DataCollection() {
@@ -42,6 +42,29 @@ function DataCollection() {
     }
   };
 
+  const handleFoul = async () => {
+    // Submit current string with Foul as last action
+    await submitString(selectedMatch.value, "Foul");
+    console.log('📊 Foul - string submitted and reset');
+
+    // Show confirmation message
+    if (currentString.value.length > 0 || selectedMatch.value) {
+      alert('Foul recorded. String data has been saved.');
+    } else {
+      alert('Foul recorded. No string to save.');
+    }
+  };
+
+  // Sort players by jersey number
+  const getSortedPlayers = () => {
+    return [...selectedPlayers.value].sort((a, b) => {
+      // Extract the number from "number - name" format
+      const numA = parseInt(a.split(' - ')[0]);
+      const numB = parseInt(b.split(' - ')[0]);
+      return numA - numB;
+    });
+  };
+
   return (
     <div className="data-collection-container">
       <div className="data-collection-content">
@@ -53,9 +76,31 @@ function DataCollection() {
             <h1 className="page-title">Data Collection</h1>
             <p className="match-info">Match: {selectedMatch.value || 'No match selected'}</p>
           </div>
-          <button className="play-ended-button" onClick={handlePlayEnded}>
-            Play Ended
-          </button>
+          <div className="header-buttons">
+            <div className="comets-side-toggle">
+              <label className="toggle-label">Comets Defending:</label>
+              <div className="toggle-buttons">
+                <button
+                  className={`toggle-button ${cometsSide.value === 'left' ? 'active' : ''}`}
+                  onClick={() => cometsSide.value = 'left'}
+                >
+                  Left
+                </button>
+                <button
+                  className={`toggle-button ${cometsSide.value === 'right' ? 'active' : ''}`}
+                  onClick={() => cometsSide.value = 'right'}
+                >
+                  Right
+                </button>
+              </div>
+            </div>
+            <button className="foul-button" onClick={handleFoul}>
+              Foul
+            </button>
+            <button className="play-ended-button" onClick={handlePlayEnded}>
+              Play Ended
+            </button>
+          </div>
         </div>
 
         <div className="data-collection-grid">
@@ -66,7 +111,7 @@ function DataCollection() {
               {selectedPlayers.value.length === 0 ? (
                 <p className="no-players-message">No players selected. Please return to home and select 16 players.</p>
               ) : (
-                selectedPlayers.value.map((player, index) => (
+                getSortedPlayers().map((player, index) => (
                   <button
                     key={index}
                     className={`player-button ${currentPlayer.value === player ? 'active' : ''}`}
