@@ -78,7 +78,7 @@
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 0.5rem;
   align-content: start;
 }
 
@@ -88,9 +88,9 @@
 }
 
 .form-section h3 {
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: var(--action-pass-success);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   font-weight: 700;
 }
 
@@ -130,18 +130,83 @@
   flex-direction: column;
 }
 
+.zone-section h3 {
+  font-size: 0.9em;
+  color: var(--action-pass-success);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+/* Zone Labels */
+.zone-labels {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.zone-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.zone-started-label::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: var(--action-pass-success);
+  border-radius: 2px;
+}
+
+.zone-ended-label::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: var(--comets-blue-light);
+  border-radius: 2px;
+}
+
+.zone-label-separator {
+  color: var(--comets-dark-gray);
+  font-weight: 400;
+}
+
+.zone-instruction {
+  font-size: 0.75em;
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
 .field-container {
   position: relative;
-  width: 298px;
-  height: 418px;
+  width: 418px; /* Swapped for horizontal orientation */
+  height: 298px; /* Swapped for horizontal orientation */
   background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
   border: 2px solid var(--comets-white);
   border-radius: 6px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr); /* Swapped: 6 columns for horizontal */
+  grid-template-rows: repeat(3, 1fr); /* Swapped: 3 rows for horizontal */
   gap: 2px;
   padding: 4px;
+  transition: transform 0.3s ease;
+}
+
+.field-container.field-rotated {
+  transform: rotate(180deg); /* Right side: flip 180 degrees */
+}
+
+.field-container.field-rotated .zone-button {
+  transform: rotate(180deg); /* Counter-rotate numbers to keep them readable */
 }
 
 .zone-button {
@@ -164,28 +229,53 @@
   transform: scale(1.03);
 }
 
-.zone-button.active {
+/* Zone selection states */
+.zone-button.zone-started {
   background-color: var(--action-pass-success);
   border-color: var(--comets-white);
   color: var(--comets-white);
   transform: scale(1.05);
 }
 
-/* Zone positioning based on reference image */
-.zone-1 { grid-column: 2; grid-row: 6; }
-.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 3px 3px 20px 3px; }
-.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 3px 3px 3px 20px; }
-.zone-4 { grid-column: 2; grid-row: 5; }
-.zone-5 { grid-column: 3; grid-row: 4; }
-.zone-6 { grid-column: 1; grid-row: 4; }
-.zone-7 { grid-column: 2; grid-row: 4; }
-.zone-8 { grid-column: 3; grid-row: 3; }
-.zone-9 { grid-column: 1; grid-row: 3; }
-.zone-10 { grid-column: 2; grid-row: 3; }
-.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 3px 20px 3px 3px; }
-.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 20px 3px 3px 3px; }
-.zone-13 { grid-column: 2; grid-row: 1; }
-.zone-14 { grid-column: 2; grid-row: 2; }
+.zone-button.zone-ended {
+  background-color: var(--comets-blue-light);
+  border-color: var(--comets-white);
+  color: var(--comets-white);
+  transform: scale(1.05);
+}
+
+.zone-button.zone-both {
+  background: linear-gradient(135deg,
+    var(--action-pass-success) 0%,
+    var(--action-pass-success) 50%,
+    var(--comets-blue-light) 50%,
+    var(--comets-blue-light) 100%);
+  border-color: var(--comets-white);
+  color: var(--comets-white);
+  transform: scale(1.05);
+}
+
+/* Zone positioning for horizontal field (6 columns × 3 rows) */
+.zone-1 { grid-column: 1; grid-row: 2; }
+.zone-2 { grid-column: 1 / 3; grid-row: 3; border-radius: 3px 3px 3px 20px; }
+.zone-3 { grid-column: 1 / 3; grid-row: 1; border-radius: 20px 3px 3px 3px; }
+.zone-4 { grid-column: 2; grid-row: 2; }
+.zone-5 { grid-column: 3; grid-row: 3; }
+.zone-6 { grid-column: 3; grid-row: 1; }
+.zone-7 { grid-column: 3; grid-row: 2; }
+.zone-8 { grid-column: 4; grid-row: 3; }
+.zone-9 { grid-column: 4; grid-row: 1; }
+.zone-10 { grid-column: 4; grid-row: 2; }
+.zone-11 { grid-column: 5 / 7; grid-row: 3; border-radius: 3px 3px 20px 3px; }
+.zone-12 { grid-column: 5 / 7; grid-row: 1; border-radius: 3px 20px 3px 3px; }
+.zone-13 { grid-column: 5; grid-row: 2; }
+.zone-14 { grid-column: 6; grid-row: 2; }
+
+/* When field is rotated 180 degrees, flip the corner radii */
+.field-container.field-rotated .zone-2 { border-radius: 3px 20px 3px 3px; }
+.field-container.field-rotated .zone-3 { border-radius: 3px 3px 20px 3px; }
+.field-container.field-rotated .zone-11 { border-radius: 20px 3px 3px 3px; }
+.field-container.field-rotated .zone-12 { border-radius: 3px 3px 3px 20px; }
 
 /* Button Groups - Horizontal Row Layout */
 .button-group {
@@ -196,13 +286,13 @@
 .button-group-vertical {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .option-button {
   flex: 1;
-  padding: 0.5rem 1rem;
-  font-size: 0.85em;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8em;
   font-weight: 600;
   background-color: var(--comets-gray);
   border: 2px solid var(--action-pass-fail);
@@ -224,6 +314,19 @@
   border-color: var(--action-pass-success);
   color: var(--comets-white);
   font-weight: 700;
+}
+
+/* Accuracy Display for Successful Passes */
+.accuracy-display {
+  padding: 0.5rem 1rem;
+  font-size: 0.85em;
+  font-weight: 700;
+  background-color: var(--action-pass-success);
+  border: 2px solid var(--action-pass-success);
+  color: var(--comets-white);
+  border-radius: 6px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 /* Action Buttons - Compact */

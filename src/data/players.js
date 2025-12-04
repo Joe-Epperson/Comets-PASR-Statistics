@@ -8,10 +8,11 @@ export const players = [
   "9 - Junior Kazeem",
   "10 - Lucas Sousa",
   "11 - Lesia Thetsane",
-  "13 - Chris Frederick",
+  "12 - Erik Pereira",
   "16 - Henry Ramirez",
   "17 - Leonardo Acosta",
   "18 - Nathan Durdle",
+  "19 - Ali Alomari",
   "23 - Ignacio Flores",
   "24 - Stefan Mijatovic",
   "26 - Rian Marques",
@@ -20,8 +21,9 @@ export const players = [
   "29 - Michael Lenis",
   "31 - Christian Anderaos",
   "36 - Julio Coronado",
+  "45 - Chase Peterson",
+  "48 - Jacob Garza",
   "80 - David Stankovic",
   "91 - Debray Hollimon",
-  "95 - Leonel Palma",
   "99 - Phillip Ejimadu"
 ];

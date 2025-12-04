@@ -4,7 +4,8 @@ import {
   selectedMatch,
   selectedPlayers,
   isSuccessful,
-  currentActionType
+  currentActionType,
+  cometsSide
 } from '../../data/signals';
 import './SetPieceAction.css';
 
@@ -257,7 +258,7 @@ function SetPieceAction() {
               {/* Zone Taken Section */}
               <div className="form-section">
                 <h3>Zone Taken</h3>
-                <div className="field-container">
+                <div className={`field-container ${cometsSide.value === 'right' ? 'field-rotated' : ''}`}>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((zone) => (
                     <button
                       key={zone}
