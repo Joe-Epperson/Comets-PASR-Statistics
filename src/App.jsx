@@ -6,6 +6,7 @@ import PassAction from './pages/actions/PassAction';
 import DribbleAction from './pages/actions/DribbleAction';
 import ShotAction from './pages/actions/ShotAction';
 import SetPieceAction from './pages/actions/SetPieceAction';
+import MatchReport from './pages/reports/MatchReport';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/action/dribble" element={<DribbleAction />} />
         <Route path="/action/shot" element={<ShotAction />} />
         <Route path="/action/setpiece" element={<SetPieceAction />} />
+        <Route path="/report/match" element={<MatchReport />} />
       </Routes>
     </Router>
   );

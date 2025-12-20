@@ -10,7 +10,8 @@ import {
   previousActionPlayer,
   currentString,
   submitString,
-  cometsSide
+  cometsSide,
+  lastSuccessfulZoneEnded
 } from '../../data/signals';
 import './ShotAction.css';
 
@@ -18,7 +19,7 @@ function ShotAction() {
   const navigate = useNavigate();
 
   // Local state for form fields
-  const [zoneTaken, setZoneTaken] = useState(null);
+  const [zoneTaken, setZoneTaken] = useState(lastSuccessfulZoneEnded.value);
   const [accuracy, setAccuracy] = useState('');
   const [result, setResult] = useState('');
 
@@ -110,6 +111,13 @@ function ShotAction() {
     previousActionType.value = 'Shot';
     previousActionSuccess.value = isSuccessful.value;
     previousActionPlayer.value = currentPlayer.value;
+
+    // Update lastSuccessfulZoneEnded if shot was successful
+    if (isSuccessful.value) {
+      lastSuccessfulZoneEnded.value = zoneTaken;
+    } else {
+      lastSuccessfulZoneEnded.value = null;
+    }
 
     // Clear current action signals
     currentPlayer.value = '';

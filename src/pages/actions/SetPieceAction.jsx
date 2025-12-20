@@ -39,8 +39,16 @@ function SetPieceAction() {
     }
   };
 
-  // Validate Other Players count (3-5)
+  // Check if set piece type is Shootout or Penalty (individual plays)
+  const isIndividualPlay = () => {
+    return setPieceType === 'Shootout' || setPieceType === 'Penalty';
+  };
+
+  // Validate Other Players count (3-5) - not required for Shootout/Penalty
   const isOtherPlayersValid = () => {
+    if (isIndividualPlay()) {
+      return true; // Other players not required for Shootout/Penalty
+    }
     return otherPlayers.length >= 3 && otherPlayers.length <= 5;
   };
 
@@ -52,12 +60,12 @@ function SetPieceAction() {
 
   // Check if form is valid
   const isFormValid = () => {
-    const baseValid =
-      setPieceType &&
-      playerOnBall &&
-      isOtherPlayersValid() &&
-      shotTaken &&
-      passesToResult !== '';
+    let baseValid = setPieceType && playerOnBall && shotTaken;
+
+    // For non-individual plays, require Other Players and Passes to Result
+    if (!isIndividualPlay()) {
+      baseValid = baseValid && isOtherPlayersValid() && passesToResult !== '';
+    }
 
     // If shot was taken, additional fields required
     if (shotTaken === 'Yes') {
@@ -79,10 +87,14 @@ function SetPieceAction() {
       "Successful": isSuccessfulSetPiece,
       "Set Piece Type": setPieceType,
       "Player on Ball": playerOnBall,
-      "Other Players": otherPlayers, // Array of 3-5 players
       "Shot Taken": shotTaken,
-      "Passes to Result": parseInt(passesToResult, 10),
     };
+
+    // Only add Other Players and Passes to Result for non-individual plays
+    if (!isIndividualPlay()) {
+      actionData["Other Players"] = otherPlayers; // Array of 3-5 players
+      actionData["Passes to Result"] = parseInt(passesToResult, 10);
+    }
 
     // Only add shot-related fields if shot was taken
     if (shotTaken === 'Yes') {
@@ -204,34 +216,36 @@ function SetPieceAction() {
             </select>
           </div>
 
-          {/* Other Players Section */}
-          <div className="form-section">
-            <h3>Other Players (Select 3-5)</h3>
-            <div className="player-count">
-              Selected: {otherPlayers.length}/5 {!isOtherPlayersValid() && '(minimum 3)'}
-            </div>
-            <div className="checkbox-grid">
-              {getAvailableOtherPlayers().map((player, index) => {
-                const isSelected = otherPlayers.includes(player);
-                const isDisabled = !isSelected && otherPlayers.length >= 5;
+          {/* Other Players Section - Only show for non-individual plays */}
+          {!isIndividualPlay() && (
+            <div className="form-section">
+              <h3>Other Players (Select 3-5)</h3>
+              <div className="player-count">
+                Selected: {otherPlayers.length}/5 {!isOtherPlayersValid() && '(minimum 3)'}
+              </div>
+              <div className="checkbox-grid">
+                {getAvailableOtherPlayers().map((player, index) => {
+                  const isSelected = otherPlayers.includes(player);
+                  const isDisabled = !isSelected && otherPlayers.length >= 5;
 
-                return (
-                  <label
-                    key={index}
-                    className={`checkbox-label ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => handleOtherPlayerToggle(player)}
-                      disabled={isDisabled}
-                    />
-                    <span className="checkbox-player-name">{player}</span>
-                  </label>
-                );
-              })}
+                  return (
+                    <label
+                      key={index}
+                      className={`checkbox-label ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => handleOtherPlayerToggle(player)}
+                        disabled={isDisabled}
+                      />
+                      <span className="checkbox-player-name">{player}</span>
+                    </label>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Shot Taken Section */}
           <div className="form-section">
@@ -347,21 +361,23 @@ function SetPieceAction() {
             </>
           )}
 
-          {/* Passes to Result Section */}
-          <div className="form-section">
-            <h3>Passes to Result</h3>
-            <div className="button-group">
-              {[0, 1, 2, 3, 4, 5, 6].map((num) => (
-                <button
-                  key={num}
-                  className={`option-button number-button ${passesToResult === num.toString() ? 'active' : ''}`}
-                  onClick={() => setPassesToResult(num.toString())}
-                >
-                  {num}
-                </button>
-              ))}
+          {/* Passes to Result Section - Only show for non-individual plays */}
+          {!isIndividualPlay() && (
+            <div className="form-section">
+              <h3>Passes to Result</h3>
+              <div className="button-group">
+                {[0, 1, 2, 3, 4, 5, 6].map((num) => (
+                  <button
+                    key={num}
+                    className={`option-button number-button ${passesToResult === num.toString() ? 'active' : ''}`}
+                    onClick={() => setPassesToResult(num.toString())}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Action Buttons */}
