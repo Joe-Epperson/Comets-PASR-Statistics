@@ -1,0 +1,2993 @@
+/* MatchReport.css - Print-Optimized Match Report */
+
+/* Container */
+.report-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 1rem;
+}
+
+/* Controls Bar - Hidden in print */
+.report-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-controls button {
+  padding: 0.5em 1em;
+  font-size: 0.85em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn {
+  background-color: var(--comets-blue);
+  color: white;
+  border: 2px solid var(--comets-blue);
+}
+
+.back-btn:hover {
+  background-color: var(--comets-blue-dark);
+  border-color: var(--comets-blue-dark);
+}
+
+.finalize-btn {
+  background-color: #28a745;
+  color: white;
+  border: 2px solid #28a745;
+}
+
+.finalize-btn:hover:not(:disabled) {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.finalize-btn.finalized {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #333;
+}
+
+.finalize-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.print-btn {
+  background-color: var(--comets-red);
+  color: white;
+  border: 2px solid var(--comets-red);
+}
+
+.print-btn:hover {
+  background-color: var(--comets-red-dark);
+  border-color: var(--comets-red-dark);
+}
+
+/* Confirmation Dialog */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-box {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.dialog-box h3 {
+  margin-bottom: 0.75rem;
+  color: var(--comets-red);
+}
+
+.dialog-box p {
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.dialog-buttons button {
+  padding: 0.5em 1.5em;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dialog-buttons button:first-child {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.dialog-buttons button:last-child {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+/* Report Page */
+.report-page {
+  background-color: white;
+  max-width: 8.5in;
+  margin: 0 auto 1.5rem auto;
+  padding: 0.4in;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Report Logo */
+.report-logo {
+  position: absolute;
+  top: 0.3in;
+  left: 0.3in;
+  width: 90px;
+  height: auto;
+  z-index: 10;
+}
+
+/* Header */
+.report-header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--comets-red);
+}
+
+.team-matchup {
+  font-size: 1.4em;
+  color: var(--comets-blue);
+  margin: 0 0 0.15rem 0;
+  font-weight: 700;
+}
+
+.match-date {
+  font-size: 0.85em;
+  color: #666;
+  margin: 0 0 0.4rem 0;
+}
+
+.report-title {
+  font-size: 1.1em;
+  color: var(--comets-red);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0 0 0.5rem 0;
+}
+
+.final-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 2em;
+  font-weight: 800;
+}
+
+.score-value {
+  background-color: var(--comets-blue);
+  color: white;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.score-dash {
+  color: var(--comets-dark-gray);
+}
+
+/* Section Heading */
+.section-heading {
+  font-size: 0.8em;
+  color: var(--comets-red);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 0.4rem 0;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--comets-gray);
+}
+
+/* Lineup Section */
+.lineup-section {
+  margin-bottom: 0.6rem;
+}
+
+.lineup-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.25rem;
+}
+
+.lineup-player {
+  font-size: 0.65em;
+  padding: 0.25rem 0.3rem;
+  background-color: var(--comets-gray);
+  border-radius: 3px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Performance Section */
+.performance-section {
+  margin-bottom: 0.6rem;
+}
+
+.performance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.performance-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stat-box.highlight {
+  background-color: var(--comets-blue);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-big {
+  font-size: 2em;
+  font-weight: 800;
+  display: block;
+}
+
+.stat-box .stat-label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.stat-box .comparison {
+  font-size: 0.75em;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.stat-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.stat-mini {
+  flex: 1;
+  background-color: var(--comets-gray);
+  padding: 0.35rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.stat-mini.success {
+  background-color: #d4edda;
+}
+
+.stat-mini.fail {
+  background-color: #f8d7da;
+}
+
+.stat-num {
+  font-size: 1.1em;
+  font-weight: 700;
+  display: block;
+}
+
+.stat-mini .stat-label {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.performance-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--comets-gray);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
+
+.breakdown-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  width: 70px;
+}
+
+.breakdown-value {
+  font-size: 0.8em;
+  flex: 1;
+  text-align: center;
+}
+
+.breakdown-pct {
+  font-size: 0.85em;
+  font-weight: 700;
+  width: 45px;
+  text-align: right;
+}
+
+/* Zone Activity & Match Stats Section */
+.zone-stats-section {
+  margin-bottom: 0.5rem;
+}
+
+.zone-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.75rem;
+}
+
+/* Field Tilt / Zone Activity Field */
+.zone-activity {
+  display: flex;
+  flex-direction: column;
+}
+
+.zone-activity .section-header-with-desc {
+  margin-bottom: 0.3rem;
+}
+
+.zone-activity .section-desc {
+  font-size: 0.55em;
+}
+
+.zone-field {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--comets-blue);
+  /* Indoor soccer field: narrow rectangle with rounded ends */
+  border-radius: 35px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 150px;
+  width: 130px;
+  margin: 0 auto;
+}
+
+.zone-third {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  transition: background-color 0.3s ease;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.zone-third:last-child {
+  border-bottom: none;
+}
+
+.zone-count {
+  font-size: 1.2em;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.zone-pct {
+  font-size: 0.85em;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.zone-label {
+  font-size: 0.6em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+/* Match Extras (Strings & Set Pieces) */
+.match-extras {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.extras-box {
+  background-color: var(--comets-gray);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  flex: 1;
+}
+
+.extras-box .section-heading {
+  margin-bottom: 0.3rem;
+  font-size: 0.75em;
+}
+
+.extras-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.extras-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+
+.extras-big {
+  font-size: 2.4em;
+  font-weight: 800;
+  color: var(--comets-blue);
+  line-height: 1;
+}
+
+.extras-label {
+  font-size: 0.65em;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.extras-details {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.extras-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 0.35rem;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.extras-value {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.extras-desc {
+  font-size: 0.55em;
+  color: #888;
+  text-transform: uppercase;
+}
+
+/* Player Rates Section */
+.player-rates-section {
+  margin-bottom: 0.5rem;
+}
+
+.section-header-with-desc {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--comets-gray);
+}
+
+.section-header-with-desc .section-heading {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.section-desc {
+  font-size: 0.65em;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+}
+
+.player-rates-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+}
+
+.player-rate-card {
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  text-align: center;
+  border-left: 3px solid;
+  position: relative;
+}
+
+/* Success Rate Card Colors - More distinct backgrounds */
+.player-rate-card.rate-excellent {
+  background-color: #c8e6c9;
+  border-left-color: #1B5E20;
+}
+
+.player-rate-card.rate-good {
+  background-color: #dcedc8;
+  border-left-color: #388E3C;
+}
+
+.player-rate-card.rate-average {
+  background-color: #f0f4c3;
+  border-left-color: #66BB6A;
+}
+
+.player-rate-card.rate-below-average {
+  background-color: #fff9c4;
+  border-left-color: #FDD835;
+}
+
+.player-rate-card.rate-poor {
+  background-color: #ffe0b2;
+  border-left-color: #FB8C00;
+}
+
+.player-rate-card.rate-critical {
+  background-color: #ffcdd2;
+  border-left-color: #D32F2F;
+}
+
+.player-rate-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1;
+}
+
+.player-rate-pct {
+  font-size: 0.9em;
+  font-weight: 700;
+}
+
+.player-rate-comp {
+  font-size: 0.6em;
+  font-weight: 600;
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.player-rate-card .player-rate-name {
+  font-size: 0.7em;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.player-rate-count {
+  font-size: 0.5em;
+  color: #666;
+  line-height: 1;
+}
+
+/* Comparison Colors */
+.compare-positive {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.compare-negative {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.compare-neutral {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+/* Finalized Badge */
+.finalized-badge {
+  position: absolute;
+  top: 0.4in;
+  right: 0.4in;
+  background-color: #28a745;
+  color: white;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+/* Page Number */
+.page-number {
+  position: absolute;
+  bottom: 0.2in;
+  right: 0.4in;
+  font-size: 0.65em;
+  color: #999;
+}
+
+/* Page Header (for pages 2+) */
+.page-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--comets-red);
+}
+
+.page-title {
+  font-size: 1.2em;
+  color: var(--comets-blue);
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  font-size: 0.9em;
+  color: #666;
+  margin: 0;
+  font-style: italic;
+}
+
+/* No actions - neutral light blue background */
+.player-rate-card.rate-no-actions {
+  background-color: #e3f2fd;
+  border-left-color: #90caf9;
+}
+
+/* Loading/Error States */
+.loading-message,
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.error-message button {
+  padding: 0.6em 1.5em;
+  background-color: var(--comets-blue);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================= PAGE 4: Shot Zone Analysis ================= */
+
+/* Team Shot Totals Header */
+.shot-totals-header {
+  margin-bottom: 0.75rem;
+}
+
+.shot-totals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.shot-total-item {
+  background-color: var(--comets-gray);
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid var(--comets-blue);
+}
+
+.shot-total-value {
+  display: block;
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--comets-blue);
+  line-height: 1.2;
+}
+
+.shot-total-label {
+  display: block;
+  font-size: 0.7em;
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 0.1rem;
+}
+
+.shot-total-comp {
+  display: inline-block;
+  font-size: 0.65em;
+  font-weight: 600;
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  margin-top: 0.2rem;
+}
+
+/* Shot Zones Section - 4 Fields Grid */
+.shot-zones-section {
+  margin-bottom: 0.6rem;
+}
+
+.shot-zones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+/* 2-Column Shot Zones Layout - All Shots left, rest on right */
+.shot-zones-three-col {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.all-shots-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.middle-fields-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+/* Top row: 3 fields horizontal */
+.middle-fields-top-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.goals-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.zone-field-title {
+  font-size: 0.9em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.4rem 0;
+  color: var(--comets-dark-gray);
+  text-align: center;
+}
+
+.zone-field-title-med {
+  font-size: 0.65em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.3rem 0;
+  color: var(--comets-dark-gray);
+  text-align: center;
+}
+
+/* Large Zone Field Container for All Shots */
+.zone-field-container-large {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  border: 3px solid var(--comets-blue);
+  border-radius: 50px;
+  overflow: hidden;
+  width: 230px;
+  height: 400px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.zone-cell-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95em;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-sizing: border-box;
+}
+
+.zone-cell-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.zone-cell-count-large {
+  color: #333;
+  font-size: 1.25em;
+  font-weight: 800;
+  text-shadow: 0 0 3px rgba(255,255,255,0.9);
+}
+
+.zone-cell-rate {
+  font-size: 0.75em;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background-color: rgba(255,255,255,0.8);
+}
+
+/* Large zone positioning */
+.zone-cell-large.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 50px 0 0 0; }
+.zone-cell-large.zone-13 { grid-column: 2; grid-row: 1; }
+.zone-cell-large.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 0 50px 0 0; }
+.zone-cell-large.zone-14 { grid-column: 2; grid-row: 2; }
+.zone-cell-large.zone-9 { grid-column: 1; grid-row: 3; }
+.zone-cell-large.zone-10 { grid-column: 2; grid-row: 3; }
+.zone-cell-large.zone-8 { grid-column: 3; grid-row: 3; }
+.zone-cell-large.zone-6 { grid-column: 1; grid-row: 4; }
+.zone-cell-large.zone-7 { grid-column: 2; grid-row: 4; }
+.zone-cell-large.zone-5 { grid-column: 3; grid-row: 4; }
+.zone-cell-large.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 0 0 0 50px; }
+.zone-cell-large.zone-4 { grid-column: 2; grid-row: 5; }
+.zone-cell-large.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 0 0 50px 0; }
+.zone-cell-large.zone-1 { grid-column: 2; grid-row: 6; }
+
+/* Medium Zone Field Container */
+.shot-zone-field-med {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zone-field-container-med {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  border: 2px solid var(--comets-blue);
+  border-radius: 30px;
+  overflow: hidden;
+  width: 120px;
+  height: 175px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.zone-cell-med {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85em;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-sizing: border-box;
+}
+
+.zone-cell-count-med {
+  color: #333;
+  text-shadow: 0 0 2px rgba(255,255,255,0.8);
+}
+
+/* Medium zone positioning */
+.zone-cell-med.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 30px 0 0 0; }
+.zone-cell-med.zone-13 { grid-column: 2; grid-row: 1; }
+.zone-cell-med.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 0 30px 0 0; }
+.zone-cell-med.zone-14 { grid-column: 2; grid-row: 2; }
+.zone-cell-med.zone-9 { grid-column: 1; grid-row: 3; }
+.zone-cell-med.zone-10 { grid-column: 2; grid-row: 3; }
+.zone-cell-med.zone-8 { grid-column: 3; grid-row: 3; }
+.zone-cell-med.zone-6 { grid-column: 1; grid-row: 4; }
+.zone-cell-med.zone-7 { grid-column: 2; grid-row: 4; }
+.zone-cell-med.zone-5 { grid-column: 3; grid-row: 4; }
+.zone-cell-med.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 0 0 0 30px; }
+.zone-cell-med.zone-4 { grid-column: 2; grid-row: 5; }
+.zone-cell-med.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 0 0 30px 0; }
+.zone-cell-med.zone-1 { grid-column: 2; grid-row: 6; }
+
+/* Goalscorers List - Horizontal Layout */
+.goalscorers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8em;
+}
+
+.goalscorers-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.3rem 0;
+  color: var(--comets-dark-gray);
+  text-align: left;
+}
+
+.goalscorers-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.goalscorer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  background-color: rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.goalscorer-name {
+  font-weight: 600;
+  font-size: 0.8em;
+  color: var(--comets-dark-gray);
+}
+
+.goalscorer-count {
+  font-weight: 700;
+  font-size: 0.85em;
+  color: var(--comets-dark-gray);
+  background-color: rgba(255, 215, 0, 0.6);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+.no-goals {
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* Chance Conversion Rate */
+.conversion-rate-box {
+  background-color: rgba(255, 215, 0, 0.2);
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.conversion-rate-label {
+  font-size: 0.65em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--comets-dark-gray);
+}
+
+.conversion-rate-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.conversion-rate-value {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: var(--comets-dark-gray);
+}
+
+.conversion-rate-comp {
+  font-size: 0.7em;
+  font-weight: 600;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* Additional Stats Row */
+.shot-additional-stats {
+  margin-top: 0.6rem;
+}
+
+.additional-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.additional-stat-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+}
+
+.additional-stat-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.4rem 0;
+  color: var(--comets-red);
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.25rem;
+}
+
+.additional-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.additional-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  padding: 0.2rem 0;
+}
+
+.stat-name {
+  color: #555;
+  flex: 1;
+  font-weight: 600;
+}
+
+.stat-count {
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.stat-count-pct {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.stat-percentage {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Enhanced Previous Action Stats - 3 Column Layout */
+.additional-stat-list-enhanced {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.additional-stat-item-enhanced {
+  display: grid;
+  grid-template-columns: auto auto 1.5fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.7em;
+}
+
+.additional-stat-item-enhanced:last-child {
+  border-bottom: none;
+}
+
+.additional-stat-item-enhanced .stat-name {
+  font-weight: 700;
+  color: #555;
+  min-width: 70px;
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 1em;
+  justify-content: center;
+}
+
+.stat-details .stat-count {
+  font-size: 0.95em;
+  color: var(--comets-dark-gray);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stat-success {
+  font-size: 0.9em;
+  color: #28a745;
+  font-weight: 600;
+}
+
+.stat-goals {
+  font-size: 0.9em;
+  color: #ffc107;
+  font-weight: 600;
+}
+
+/* ================= PAGE 5: Top Shooters ================= */
+
+.top-shooters-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.top-shooter-card {
+  background-color: var(--comets-gray);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  border-left: 5px solid var(--comets-blue);
+}
+
+.shooter-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.shooter-rank {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: var(--comets-red);
+}
+
+.shooter-name {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--comets-blue);
+}
+
+.shooter-stats-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8em;
+}
+
+.shooter-stat {
+  padding: 0.2rem 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.shooter-content {
+  display: grid;
+  grid-template-columns: 1fr 120px 1.5fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+/* Override for Top Passers - wider middle column for two mini fields */
+.page-8 .shooter-content {
+  grid-template-columns: auto auto 1fr;
+}
+
+.shooter-zones {
+  font-size: 0.75em;
+}
+
+.shooter-section-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-dark-gray);
+  margin: 0 0 0.3rem 0;
+}
+
+.zone-preference {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.zone-preference:last-child {
+  border-bottom: none;
+}
+
+.zone-pref-zone {
+  font-weight: 600;
+  color: #333;
+}
+
+.zone-pref-count {
+  color: #666;
+}
+
+.zone-pref-rate {
+  font-weight: 600;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+/* Mini Zone Field for Top Shooters */
+.shooter-mini-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Horizontal wrapper for two mini zone fields (Pass pages only) */
+.shooter-mini-zones-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.mini-field-label {
+  font-size: 0.65em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.3rem 0;
+  color: var(--comets-dark-gray);
+  text-align: center;
+}
+
+/* Mini Zone Field Container - 14 zones grid (vertical 3x6 layout) */
+.mini-field-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 15px 15px 15px 15px 15px 15px;
+  border: 2px solid var(--comets-blue);
+  border-radius: 18px;
+  overflow: hidden;
+  width: 60px;
+  height: 90px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.mini-zone-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5em;
+  font-weight: 700;
+  color: #333;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-sizing: border-box;
+}
+
+/* Mini zone positioning (vertical 3x6 grid) */
+/* Row 1 (top): 12, 13, 11 - spans */
+.mini-zone-cell.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 4px 0 0 0; }
+.mini-zone-cell.zone-13 { grid-column: 2; grid-row: 1; }
+.mini-zone-cell.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 0 4px 0 0; }
+/* Row 2: 14 */
+.mini-zone-cell.zone-14 { grid-column: 2; grid-row: 2; }
+/* Row 3: 9, 10, 8 */
+.mini-zone-cell.zone-9 { grid-column: 1; grid-row: 3; }
+.mini-zone-cell.zone-10 { grid-column: 2; grid-row: 3; }
+.mini-zone-cell.zone-8 { grid-column: 3; grid-row: 3; }
+/* Row 4: 6, 7, 5 */
+.mini-zone-cell.zone-6 { grid-column: 1; grid-row: 4; }
+.mini-zone-cell.zone-7 { grid-column: 2; grid-row: 4; }
+.mini-zone-cell.zone-5 { grid-column: 3; grid-row: 4; }
+/* Row 5: 3, 4, 2 - spans */
+.mini-zone-cell.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 0 0 0 4px; }
+.mini-zone-cell.zone-4 { grid-column: 2; grid-row: 5; }
+.mini-zone-cell.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 0 0 4px 0; }
+/* Row 6: 1 */
+.mini-zone-cell.zone-1 { grid-column: 2; grid-row: 6; }
+
+/* Shooter Breakdown (Accuracy & Results) */
+.shooter-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.shooter-accuracy,
+.shooter-results {
+  font-size: 0.7em;
+}
+
+.shooter-breakdown .shooter-stat-item {
+  display: inline-block;
+  margin-right: 0.6rem;
+  padding: 0.1em 0.3em;
+  background-color: white;
+  border-radius: 3px;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .report-container {
+    background-color: white;
+    padding: 0;
+  }
+
+  .report-page {
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+  }
+
+  .report-logo {
+    top: 0;
+    left: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: letter;
+    margin: 0.4in;
+  }
+
+  .page-1,
+  .page-2,
+  .page-3,
+  .page-4,
+  .page-10,
+  .page-11,
+  .page-12 {
+    page-break-after: always;
+  }
+
+  .page-2,
+  .page-3,
+  .page-4,
+  .page-5,
+  .page-6,
+  .page-7,
+  .page-8,
+  .page-9,
+  .page-10,
+  .page-11,
+  .page-12,
+  .page-13,
+  .page-14 {
+    padding-top: 0.5in;
+  }
+
+  /* Prevent sections from being cut across pages */
+  .player-rates-section {
+    page-break-inside: avoid;
+  }
+
+  .player-rates-grid {
+    page-break-inside: avoid;
+  }
+
+  .player-rate-card {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    page-break-inside: avoid;
+  }
+
+  .performance-section {
+    page-break-inside: avoid;
+  }
+
+  .lineup-section {
+    page-break-inside: avoid;
+  }
+
+  .zone-stats-section {
+    page-break-inside: avoid;
+  }
+
+  .stat-box.highlight {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ensure breakdown items print colors properly */
+  .breakdown-item {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .stat-mini {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .zone-third {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .extras-box {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .extras-stat {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Page 4 & 5 print styles */
+  .shot-totals-header,
+  .shot-zones-section,
+  .zone-stats-table-section,
+  .shot-additional-stats,
+  .top-shooters-section {
+    page-break-inside: avoid;
+  }
+
+  .shot-total-item,
+  .zone-field-container,
+  .zone-stats-table,
+  .additional-stat-box,
+  .top-shooter-card {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .zone-cell,
+  .mini-zone-cell {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .zone-stats-header,
+  .zone-stats-row {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lineup-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .performance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-rates-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ================= PAGE 6: Pass Zone Analysis ================= */
+
+/* Two-Column Layout: Large Fields Left, Medium Fields Right */
+.pass-zones-two-col {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pass-zones-large-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pass-zone-large-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Override large field dimensions for Page 6 to prevent logo overlap */
+.page-6 .zone-field-container-large {
+  width: 220px;
+  height: 370px;
+}
+
+.page-6 .zone-cell-large {
+  font-size: 0.75em;
+}
+
+
+.pass-medium-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.pass-fields-three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.pass-field-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Assists Section */
+.assists-section {
+  margin-bottom: 0.6rem;
+}
+
+.assists-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.4rem 0;
+  color: var(--comets-dark-gray);
+  text-align: left;
+}
+
+.assists-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.assist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  background-color: rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.assist-name {
+  font-weight: 600;
+  font-size: 0.8em;
+  color: var(--comets-dark-gray);
+}
+
+.assist-count {
+  font-weight: 700;
+  font-size: 0.85em;
+  color: var(--comets-dark-gray);
+  background-color: rgba(255, 215, 0, 0.6);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+.no-assists {
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* Chance Creators Section */
+.chance-creators-section {
+  margin-bottom: 0.6rem;
+}
+
+.chance-creators-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.4rem 0;
+  color: var(--comets-dark-gray);
+  text-align: left;
+}
+
+.chance-creators-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.creator-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  background-color: rgba(0, 61, 165, 0.2);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.creator-name {
+  font-weight: 600;
+  font-size: 0.8em;
+  color: var(--comets-dark-gray);
+}
+
+.creator-stats {
+  font-weight: 700;
+  font-size: 0.85em;
+  color: white;
+  background-color: rgba(0, 61, 165, 0.8);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  min-width: 2.5em;
+  text-align: center;
+}
+
+.no-creators {
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* ================= PAGE 7: Passing Statistics ================= */
+
+.pass-totals-header {
+  margin-bottom: 0.5rem;
+}
+
+.pass-totals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background-color: var(--comets-gray);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.pass-total-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.pass-total-value {
+  font-size: 1.5em;
+  font-weight: 800;
+  color: var(--comets-dark-gray);
+}
+
+.pass-total-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+}
+
+.pass-total-comp {
+  font-size: 0.7em;
+  font-weight: 600;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* Direction Fields Section */
+.pass-direction-section {
+  margin-bottom: 0.5rem;
+}
+
+.pass-direction-three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.direction-field-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.direction-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: var(--comets-red);
+}
+
+.zone-field-subtitle {
+  font-size: 0.6em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0.2rem 0 0.15rem 0;
+  color: var(--comets-dark-gray);
+}
+
+/* Small Zone Field Container for Direction Fields */
+.zone-field-container-small {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  border: 2px solid var(--comets-blue);
+  border-radius: 18px;
+  width: 160px;
+  height: 224px;
+  background-color: #f9f9f9;
+}
+
+.zone-cell-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.zone-cell-content-small {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+}
+
+.zone-count-tiny {
+  font-size: 1.15em;
+  font-weight: 800;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.zone-rate-tiny {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Zone positioning for small fields (same as med) */
+.zone-cell-small.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 18px 0 0 0; }
+.zone-cell-small.zone-13 { grid-column: 2; grid-row: 1; }
+.zone-cell-small.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 0 18px 0 0; }
+.zone-cell-small.zone-14 { grid-column: 2; grid-row: 2; }
+.zone-cell-small.zone-9 { grid-column: 1; grid-row: 3; }
+.zone-cell-small.zone-10 { grid-column: 2; grid-row: 3; }
+.zone-cell-small.zone-8 { grid-column: 3; grid-row: 3; }
+.zone-cell-small.zone-6 { grid-column: 1; grid-row: 4; }
+.zone-cell-small.zone-7 { grid-column: 2; grid-row: 4; }
+.zone-cell-small.zone-5 { grid-column: 3; grid-row: 4; }
+.zone-cell-small.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 0 0 0 18px; }
+.zone-cell-small.zone-4 { grid-column: 2; grid-row: 5; }
+.zone-cell-small.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 0 0 18px 0; }
+.zone-cell-small.zone-1 { grid-column: 2; grid-row: 6; }
+
+.direction-summary {
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+/* Accuracy & Result if Bad Section */
+.pass-stats-bottom {
+  margin-top: 0.4rem;
+}
+
+.pass-stats-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.pass-stat-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+
+.pass-stat-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.3rem 0;
+  color: var(--comets-red);
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.pass-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pass-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  padding: 0.15rem 0;
+}
+
+.no-data {
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  font-size: 0.75em;
+  text-align: center;
+}
+
+/* ================= PAGE 8: Top Passers ================= */
+
+.top-passers-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.passer-card {
+  background-color: var(--comets-gray);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.passer-card:hover {
+  border-color: rgba(0, 61, 165, 0.5);
+}
+
+.passer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid rgba(0, 61, 165, 0.4);
+}
+
+.passer-name-rank {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.passer-rank {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: rgba(0, 61, 165, 0.9);
+  background-color: rgba(0, 61, 165, 0.2);
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passer-name {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.passer-summary {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.8em;
+}
+
+.passer-total {
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.passer-success {
+  font-weight: 600;
+  color: #28a745;
+}
+
+.passer-completion {
+  font-weight: 700;
+  color: white;
+  background-color: rgba(0, 61, 165, 0.8);
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+}
+
+.passer-content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+}
+
+.passer-zones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passer-zone-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.passer-zone-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mini-zone-field {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  border: 2px solid var(--comets-blue);
+  border-radius: 15px;
+  width: 135px;
+  height: 189px;
+  background-color: #f9f9f9;
+}
+
+.mini-zone-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+/* Zone positioning for mini fields */
+.mini-zone-cell.zone-12 { grid-column: 1; grid-row: 1 / 3; border-radius: 15px 0 0 0; }
+.mini-zone-cell.zone-13 { grid-column: 2; grid-row: 1; }
+.mini-zone-cell.zone-11 { grid-column: 3; grid-row: 1 / 3; border-radius: 0 15px 0 0; }
+.mini-zone-cell.zone-14 { grid-column: 2; grid-row: 2; }
+.mini-zone-cell.zone-9 { grid-column: 1; grid-row: 3; }
+.mini-zone-cell.zone-10 { grid-column: 2; grid-row: 3; }
+.mini-zone-cell.zone-8 { grid-column: 3; grid-row: 3; }
+.mini-zone-cell.zone-6 { grid-column: 1; grid-row: 4; }
+.mini-zone-cell.zone-7 { grid-column: 2; grid-row: 4; }
+.mini-zone-cell.zone-5 { grid-column: 3; grid-row: 4; }
+.mini-zone-cell.zone-3 { grid-column: 1; grid-row: 5 / 7; border-radius: 0 0 0 15px; }
+.mini-zone-cell.zone-4 { grid-column: 2; grid-row: 5; }
+.mini-zone-cell.zone-2 { grid-column: 3; grid-row: 5 / 7; border-radius: 0 0 15px 0; }
+.mini-zone-cell.zone-1 { grid-column: 2; grid-row: 6; }
+
+.zone-preferences {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.zone-pref-title {
+  font-size: 0.65em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--comets-dark-gray);
+  margin-bottom: 0.2rem;
+}
+
+.zone-pref-item {
+  font-size: 0.65em;
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0;
+}
+
+.zone-pref-zone {
+  font-weight: 700;
+  color: white;
+  background-color: rgba(0, 61, 165, 0.8);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  min-width: 3em;
+  text-align: center;
+}
+
+.passer-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.passer-section {
+  background-color: white;
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+}
+
+.passer-section-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.4rem 0;
+  color: rgba(0, 61, 165, 0.9);
+  border-bottom: 1px solid rgba(0, 61, 165, 0.3);
+  padding-bottom: 0.25rem;
+}
+
+.passer-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.passer-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  padding: 0.15rem 0;
+}
+
+.passer-stat-name {
+  color: #555;
+  font-weight: 600;
+  flex: 1;
+}
+
+.passer-stat-value {
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+}
+
+.no-passers {
+  text-align: center;
+  color: var(--comets-dark-gray);
+  font-style: italic;
+  font-size: 0.9em;
+  padding: 1rem;
+}
+
+/* ================= PAGE 9: Dribble Zone Analysis ================= */
+
+/* Dribble Totals Header */
+.dribble-totals-header {
+  margin-bottom: 0.6rem;
+}
+
+.dribble-totals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.dribble-total-item {
+  background-color: var(--comets-gray);
+  padding: 0.4rem;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid var(--comets-blue);
+}
+
+.dribble-total-value {
+  display: block;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--comets-blue);
+  line-height: 1.2;
+}
+
+.dribble-total-label {
+  display: block;
+  font-size: 0.65em;
+  color: #666;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.dribble-total-comp {
+  display: block;
+  font-size: 0.65em;
+  font-weight: 600;
+  margin-top: 0.2rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 3px;
+}
+
+/* Two-Column Layout for Dribble Zones */
+.dribble-zones-two-col {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.dribble-zones-large-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dribble-zone-large-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Override large field dimensions for Page 9 - smaller to fit */
+.page-9 .zone-field-container-large {
+  width: 200px;
+  height: 340px;
+}
+
+.page-9 .zone-cell-large {
+  font-size: 0.7em;
+}
+
+.page-9 .zone-field-title {
+  font-size: 0.55em;
+  margin-bottom: 0.3rem;
+}
+
+/* Medium Fields - 3 Columns with stats below */
+.dribble-medium-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dribble-fields-three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.dribble-field-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-9 .zone-field-title-med {
+  font-size: 0.48em;
+  margin-bottom: 0.2rem;
+}
+
+/* Purple heatmap for Beat Player fields */
+.purple-heatmap .zone-cell-med {
+  border: 1px solid rgba(153, 50, 204, 0.3);
+}
+
+/* Dribble Stats Bottom Row - stacked vertically */
+.dribble-stats-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.dribble-stat-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+}
+
+.dribble-stat-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0 0 0.3rem 0;
+  color: var(--comets-red);
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.dribble-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dribble-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  padding: 0.15rem 0;
+  gap: 0.4rem;
+}
+
+.dribble-stat-item .stat-name {
+  color: #555;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.dribble-stat-item .stat-value {
+  font-weight: 700;
+  color: var(--comets-dark-gray);
+  white-space: nowrap;
+}
+
+.dribble-stat-item .stat-rate {
+  font-weight: 600;
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
+.dribble-stat-item .stat-extra {
+  font-size: 0.95em;
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ================= PAGE 10: Top Dribblers ================= */
+
+.top-dribblers-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Reuse top-shooter-card styling for dribblers */
+
+/* ================= PAGE 11: Strings Analysis ================= */
+
+/* Summary Stats Header (5 metrics grid) */
+.string-totals-header {
+  margin-bottom: 0.75rem;
+}
+
+.string-totals-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.string-total-item {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.string-total-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--comets-blue);
+  line-height: 1;
+}
+
+.string-total-label {
+  font-size: 0.7em;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
+
+.string-total-comp {
+  font-size: 0.65em;
+  font-weight: 600;
+  padding: 0.15rem 0.3rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* Shot-Related Statistics (3-box grid) */
+.string-shot-stats {
+  margin-bottom: 0.75rem;
+}
+
+.string-shot-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.string-shot-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.string-shot-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-red);
+  margin: 0 0 0.4rem 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+  text-align: center;
+}
+
+.string-shot-metric {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.2rem;
+  font-size: 0.7em;
+}
+
+.string-shot-label {
+  font-weight: 600;
+  min-width: 55px;
+}
+
+.string-shot-value {
+  font-weight: 700;
+  color: var(--comets-blue);
+  min-width: 30px;
+}
+
+.string-shot-comp {
+  font-size: 0.9em;
+  padding: 0.1rem 0.25rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* String Length Distribution (Histogram) */
+.string-distribution {
+  margin-bottom: 0.75rem;
+}
+
+.string-section-title {
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-red);
+  margin: 0 0 0.4rem 0;
+  border-bottom: 2px solid var(--comets-blue);
+  padding-bottom: 0.2rem;
+}
+
+.distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background-color: var(--comets-gray);
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.distribution-item {
+  display: grid;
+  grid-template-columns: 100px 1fr 150px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75em;
+}
+
+.dist-length {
+  font-weight: 600;
+  text-align: right;
+  color: #333;
+}
+
+.dist-bar {
+  height: 20px;
+  background: linear-gradient(90deg, var(--comets-blue), #5a8fd6);
+  border-radius: 3px;
+  min-width: 2%;
+  transition: width 0.3s ease;
+}
+
+.dist-count {
+  font-weight: 700;
+  color: #333;
+  font-size: 0.85em;
+}
+
+/* String Distribution - Two Column Layout */
+.string-distribution-section {
+  margin-bottom: 0.75rem;
+}
+
+.string-distribution-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1rem;
+}
+
+.distribution-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Quick Stats Column */
+.quick-stats-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quick-stats-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.6rem;
+  border: 2px solid var(--comets-blue);
+}
+
+.quick-stats-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-red);
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid var(--comets-blue);
+  padding-bottom: 0.2rem;
+}
+
+.quick-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.quick-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.quick-stat-item:last-child {
+  border-bottom: none;
+}
+
+.quick-stat-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.quick-stat-value {
+  font-weight: 700;
+  color: var(--comets-blue);
+  font-size: 1.1em;
+}
+
+/* String Efficiency Chart */
+.string-efficiency-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.6rem;
+  border: 2px solid #4caf50;
+}
+
+.efficiency-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-red);
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 0.2rem;
+}
+
+.efficiency-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.efficiency-bar-item {
+  display: grid;
+  grid-template-columns: 30px 1fr 45px;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7em;
+}
+
+.efficiency-length {
+  font-weight: 700;
+  text-align: center;
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 0.2rem 0.3rem;
+  border-radius: 3px;
+}
+
+.efficiency-bar-container {
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.efficiency-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.efficiency-pct {
+  font-weight: 700;
+  color: #4caf50;
+  text-align: right;
+}
+
+/* String Tallies (2-column grid) */
+.string-tallies {
+  margin-bottom: 0.75rem;
+}
+
+.string-tallies-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.tally-box {
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.tally-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-red);
+  margin: 0 0 0.4rem 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.tally-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tally-item {
+  font-size: 0.7em;
+  display: flex;
+  gap: 0.3rem;
+  align-items: baseline;
+}
+
+.tally-length {
+  font-weight: 700;
+  min-width: 20px;
+  color: var(--comets-blue);
+}
+
+.tally-count {
+  font-weight: 600;
+  min-width: 35px;
+}
+
+.tally-success {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.tally-goal {
+  color: #f9a825;
+  font-weight: 600;
+}
+
+/* Goal-Scoring Strings List */
+.goal-strings {
+  margin-bottom: 0.75rem;
+}
+
+.goal-strings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background-color: var(--comets-gray);
+  padding: 0.6rem;
+  border-radius: 6px;
+}
+
+.goal-string-item {
+  font-size: 0.75em;
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.25rem 0;
+  align-items: baseline;
+}
+
+.goal-number {
+  font-weight: 700;
+  min-width: 20px;
+  color: var(--comets-blue);
+  flex-shrink: 0;
+}
+
+.goal-sequence {
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+.goal-length {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.95em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Last Actions List */
+.last-actions {
+  margin-bottom: 0.5rem;
+}
+
+.last-actions-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+}
+
+.last-action-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+  padding: 0.2rem 0.3rem;
+  background-color: var(--comets-gray);
+  border-radius: 4px;
+}
+
+.action-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.action-count {
+  font-weight: 700;
+  color: var(--comets-blue);
+}
+
+.action-pct {
+  font-weight: 600;
+  color: #666;
+}
+
+/* ==================== PAGE 13 & 14: SET PIECE ANALYSIS ==================== */
+
+/* Page 13 Container */
+.page-13 {
+  max-width: 8.5in;
+  padding: 0.4in;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Set Piece Totals Header */
+.setpiece-totals-header {
+  background: linear-gradient(135deg, var(--comets-blue), #4a90e2);
+  color: white;
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.setpiece-totals-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+  font-size: 0.75em;
+}
+
+.setpiece-stat-item {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.setpiece-comparison-row {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.7em;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.comparison-badge {
+  background: rgba(255,255,255,0.2);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* Set Piece Types Section */
+.setpiece-types-section {
+  margin-bottom: 0.5rem;
+}
+
+.setpiece-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.setpiece-type-box {
+  background-color: var(--comets-gray);
+  border-left: 4px solid var(--comets-blue);
+  padding: 0.4rem;
+  border-radius: 6px;
+}
+
+.type-name {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-blue);
+  margin: 0 0 0.4rem 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.type-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.type-stat-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #333;
+}
+
+/* Bottom Grid: Zone Field (Left) + Additional Stats (Right 2-column) */
+.setpiece-bottom-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+/* Zone Section */
+.setpiece-zone-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.zone-percentages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.75em;
+  margin-top: 0.5rem;
+}
+
+.zone-pct-item {
+  color: #333;
+}
+
+/* Additional Stats Grid (2-column) */
+.setpiece-additional-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.setpiece-stat-column {
+  background-color: var(--comets-gray);
+  padding: 0.4rem;
+  border-radius: 6px;
+}
+
+.stat-column-title {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-blue);
+  margin: 0 0 0.4rem 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.stat-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+}
+
+.breakdown-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.breakdown-value {
+  font-weight: 700;
+  color: #333;
+}
+
+/* Page 14 Container */
+.page-14 {
+  max-width: 8.5in;
+  padding: 0.4in;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Top Set Piece Player Cards */
+.top-setpiece-player-card {
+  background-color: var(--comets-gray);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  border-left: 5px solid var(--comets-blue);
+  margin-bottom: 0.5rem;
+}
+
+.setpiece-player-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.setpiece-rank {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: var(--comets-blue);
+}
+
+.setpiece-player-name {
+  font-size: 1em;
+  font-weight: 700;
+  color: #333;
+}
+
+.setpiece-participation-count {
+  font-size: 0.7em;
+  color: #666;
+  margin-left: auto;
+}
+
+/* Type Participation Row */
+.setpiece-types-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+  font-size: 0.7em;
+}
+
+.types-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.type-badge {
+  background: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--comets-blue);
+}
+
+/* Performance Section */
+.setpiece-performance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.setpiece-role-stats {
+  background: white;
+  padding: 0.3rem;
+  border-radius: 4px;
+  font-size: 0.7em;
+}
+
+.role-title {
+  font-size: 0.9em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--comets-blue);
+  margin: 0 0 0.3rem 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+.role-stats-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.role-stat {
+  color: #333;
+}
+
+/* Zone Preferences */
+.setpiece-zone-preferences {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0.4rem;
+  align-items: start;
+}
+
+.zone-preferences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.preferences-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #333;
+  margin: 0 0 0.3rem 0;
+}
+
+.zone-preference-item {
+  font-size: 0.7em;
+  color: #666;
+  padding: 0.2rem 0;
+}
+
+/* No Data Message */
+.no-data-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+}
+
+/* Print optimization for Set Piece pages */
+@media print {
+  .page-13 {
+    page-break-after: always;
+    padding-top: 0.5in;
+  }
+
+  .page-14 {
+    padding-top: 0.5in;
+  }
+}

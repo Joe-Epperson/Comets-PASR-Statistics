@@ -1,0 +1,405 @@
+.data-collection-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.data-collection-content {
+  max-width: 1400px;
+  width: 100%;
+  height: 95vh;
+  background-color: var(--comets-white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 61, 165, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header Section with Back Button */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.back-button-header {
+  background-color: var(--comets-blue);
+  color: var(--comets-white);
+  border: 2px solid var(--comets-blue);
+  font-size: 0.9em;
+  padding: 0.6em 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.back-button-header:hover {
+  background-color: var(--comets-blue-dark);
+  border-color: var(--comets-blue-dark);
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.comets-side-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--comets-dark-gray);
+  white-space: nowrap;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 0.25rem;
+  background-color: var(--comets-gray);
+  border-radius: 6px;
+  padding: 0.2rem;
+}
+
+.toggle-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85em;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--comets-dark-gray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-button:hover {
+  background-color: rgba(0, 61, 165, 0.1);
+}
+
+.toggle-button.active {
+  background-color: var(--comets-blue);
+  color: var(--comets-white);
+  font-weight: 700;
+}
+
+.play-ended-button,
+.foul-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: white;
+  background-color: var(--comets-red);
+  border: 2px solid var(--comets-red);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.play-ended-button:hover,
+.foul-button:hover {
+  background-color: var(--comets-red-dark);
+  border-color: var(--comets-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(227, 25, 55, 0.3);
+}
+
+.play-ended-button:active,
+.foul-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(227, 25, 55, 0.3);
+}
+
+.page-title {
+  font-size: 2em;
+  margin-bottom: 0.3rem;
+  color: var(--comets-red);
+  font-weight: 800;
+}
+
+.match-info {
+  font-size: 1em;
+  color: var(--comets-blue);
+  font-weight: 600;
+}
+
+/* Two Column Grid Layout */
+.data-collection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Player Selection Section - Left Column */
+.player-selection-section {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--comets-blue);
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: var(--comets-gray);
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 1.2em;
+  color: var(--comets-blue);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.data-collection-content .player-list {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.5rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+.player-button {
+  padding: 0.6rem;
+  background-color: var(--comets-white);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  color: var(--comets-dark-gray);
+  font-size: 0.85em;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-button:hover {
+  border-color: var(--comets-blue-light);
+  background-color: #f0f7ff;
+}
+
+.player-button.active {
+  border-color: var(--comets-blue);
+  background-color: #e6f2ff;
+  font-weight: 700;
+}
+
+.no-players-message {
+  padding: 2rem;
+  text-align: center;
+  color: var(--comets-red);
+  font-weight: 500;
+}
+
+/* Action Buttons Section - Right Column */
+.action-buttons-section {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--comets-red);
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: var(--comets-gray);
+  overflow: hidden;
+}
+
+.instruction-message {
+  font-size: 0.9em;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* 2x3 Action Button Grid */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.action-button {
+  padding: 1.5rem;
+  font-size: 1.2em;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  color: var(--comets-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Pass Buttons - Orange */
+.pass-success {
+  background-color: var(--action-pass-success);
+  border-color: var(--action-pass-success);
+}
+
+.pass-success:hover:not(:disabled) {
+  background-color: #ffad5c;
+  border-color: #ffad5c;
+}
+
+.pass-fail {
+  background-color: var(--action-pass-fail);
+  border-color: var(--action-pass-fail);
+}
+
+.pass-fail:hover:not(:disabled) {
+  background-color: #b35900;
+  border-color: #b35900;
+}
+
+/* Shot Buttons - Green */
+.shot-success {
+  background-color: var(--action-shot-success);
+  border-color: var(--action-shot-success);
+}
+
+.shot-success:hover:not(:disabled) {
+  background-color: #66bb6a;
+  border-color: #66bb6a;
+}
+
+.shot-fail {
+  background-color: var(--action-shot-fail);
+  border-color: var(--action-shot-fail);
+}
+
+.shot-fail:hover:not(:disabled) {
+  background-color: #256a29;
+  border-color: #256a29;
+}
+
+/* Dribble Buttons - Purple */
+.dribble-success {
+  background-color: var(--action-dribble-success);
+  border-color: var(--action-dribble-success);
+}
+
+.dribble-success:hover:not(:disabled) {
+  background-color: #ab47bc;
+  border-color: #ab47bc;
+}
+
+.dribble-fail {
+  background-color: var(--action-dribble-fail);
+  border-color: var(--action-dribble-fail);
+}
+
+.dribble-fail:hover:not(:disabled) {
+  background-color: #5e1589;
+  border-color: #5e1589;
+}
+
+/* Disabled Action Buttons */
+.action-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
+
+/* Set Piece Button */
+.set-piece-button {
+  background-color: var(--comets-red);
+  color: var(--comets-white);
+  border: 3px solid var(--comets-red);
+  font-size: 1.3em;
+  padding: 1.2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.set-piece-button:hover {
+  background-color: var(--comets-red-dark);
+  border-color: var(--comets-red-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .data-collection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-list {
+    max-height: 300px;
+  }
+
+  .action-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .data-collection-content {
+    padding: 2rem;
+  }
+
+  .page-title {
+    font-size: 2.2em;
+  }
+
+  .action-button {
+    font-size: 1.1em;
+    padding: 1.2rem;
+  }
+
+  .set-piece-button {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-collection-content {
+    padding: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8em;
+  }
+
+  .match-info {
+    font-size: 1em;
+  }
+
+  .action-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .action-button {
+    font-size: 1em;
+    padding: 1rem;
+  }
+
+  .set-piece-button {
+    font-size: 1.1em;
+  }
+}

@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import DataCollection from './pages/DataCollection';
+import AnalyzeData from './pages/AnalyzeData';
+import PassAction from './pages/actions/PassAction';
+import DribbleAction from './pages/actions/DribbleAction';
+import ShotAction from './pages/actions/ShotAction';
+import SetPieceAction from './pages/actions/SetPieceAction';
+import MatchReport from './pages/reports/MatchReport';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/data-collection" element={<DataCollection />} />
+        <Route path="/analyze-data" element={<AnalyzeData />} />
+        <Route path="/action/pass" element={<PassAction />} />
+        <Route path="/action/dribble" element={<DribbleAction />} />
+        <Route path="/action/shot" element={<ShotAction />} />
+        <Route path="/action/setpiece" element={<SetPieceAction />} />
+        <Route path="/report/match" element={<MatchReport />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
